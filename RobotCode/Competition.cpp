@@ -2,7 +2,7 @@
 #include "Config.h"
 #include "Drive.h"
 #include "Control.h"
-/*#include "Autonomous.h"*/
+#include "Autonomous.h"
 
 class PhoenixRobot : public IterativeRobot {
 	DriverStationLCD *lcd_;
@@ -24,6 +24,8 @@ public:
 			drive_->addMotor(Drive::Right, new Config::Motor(motorIds[i]), -1);
 		
 		control_ = new Control(new Joystick(1), new Joystick(2), Control::Tank);
+		control_->setLeftScale(-1);
+		control_->setRightScale(-1);
 		//ultrasonic_ = new AnalogChannel(5);
 	}
 	
