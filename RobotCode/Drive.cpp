@@ -1,13 +1,8 @@
 #include "Drive.h"
 #include <algorithm>
 
-Drive::Drive() { 
-	scale_ = 1;
-}
-
-Drive::Drive(MotorVector left, MotorVector right) {
-	this->leftMotors_ = left;
-	this->rightMotors_ = right;
+Drive::Drive(Config *config) { 
+	this->config_ = config;
 	scale_ = 1;
 }
 
@@ -37,7 +32,7 @@ void Drive::setRight(double value) {
 	}
 }
 
-void Drive::addMotor(Side side, Config::Motor *motor, double defaultScale) {
+void Drive::addMotor(Side side, CANJaguar *motor, double defaultScale) {
 	MotorProperty m = { motor, defaultScale };
 	(side == Left ? leftMotors_ : rightMotors_).push_back(m);
 }

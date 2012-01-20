@@ -5,48 +5,56 @@
 #include "Autonomous.h"
 
 class PhoenixRobot : public IterativeRobot {
-	DriverStationLCD *lcd_;
-	Drive *drive_;
-	Control *control_;
-	/*AnalogChannel *ultrasonic_;
-	Autonomous *autonomous_;*/
+	Config config;
 
 public:
 	PhoenixRobot() {
-		lcd_ = DriverStationLCD::GetInstance();
-		drive_ = new Drive;
-		std::vector<int> motorIds = Config::leftMotors();
-		for(size_t i = 0; i < motorIds.size(); ++i)
-			drive_->addMotor(Drive::Left, new Config::Motor(motorIds[i]), -1);
+		config.lcd = DriverStationLCD::GetInstance();
+		config.drive = new Drive(&config);
+		std::vector<CANJaguar *> motors = config.leftMotors();
+		for(size_t i = 0; i < motors.size(); ++i) {
+			config.drive->addMotor(Drive::Left, motors[i], -1);
+		}
+		motors = config.rightMotors();
+		for(size_t i = 0; i < motors.size(); ++i) {
+			config.drive->addMotor(Drive::Right, motors[i], -1);
+		}
 		
-		motorIds = Config::rightMotors();
-		for(size_t i = 0; i < motorIds.size(); ++i) 
-			drive_->addMotor(Drive::Right, new Config::Motor(motorIds[i]), -1);
+		config.control = new Control(
+				new Joystick(1), new Joystick(2), Control::Tank);
 		
-		control_ = new Control(new Joystick(1), new Joystick(2), Control::Tank);
-		control_->setLeftScale(-1);
-		control_->setRightScale(-1);
-		//ultrasonic_ = new AnalogChannel(5);
+		config.control->setLeftScale(-1);
+		config.control->setRightScale(-1);
+		config.ultrasonic = new AnalogChannel(5);
+		config.driveLight = new Relay(5);
 	}
 	
 	void AutonomousInit() {
-		//autonomous_ = new BridgeAutonomous;
+		config.autonomous = new BridgeAutonomous;
 	}
 	
 	void AutonomousPeriodic() {
-		//autonomous_->loop();
+		config.autonomous->loop();
 	}
 
 	void TeleopPeriodic() {
-		/*drive_->setLeft(control_->left());
-		drive_->setRight(control_->right());
-		drive_->setScale(control_->throttle());
-		drive_->setReversed(control_->isReversed());*/
-		lcd_->PrintfLine(DriverStationLCD::kUser_Line1, "ctrl left: %f", control_->left());
-		lcd_->PrintfLine(DriverStationLCD::kUser_Line2, "ctrl right: %f", control_->right());
-		lcd_->PrintfLine(DriverStationLCD::kUser_Line3, "ctrl throttle: %f", control_->throttle());
-		lcd_->PrintfLine(DriverStationLCD::kUser_Line4, "ctrl reversed: %s", control_->isReversed()?"true":"false");
-		lcd_->UpdateLCD();
+		config.drive->setLeft(config.control->left());
+		config.drive->setRight(config.control->right());
+		config.drive->setScale(config.control->throttle());
+		config.drive->setReversed(config.control->isReversed());
+		config.lcd->PrintfLine(DriverStationLCD::kUser_Line1, 
+				"ctrl left: %f", config.control->left());
+		
+		config.lcd->PrintfLine(DriverStationLCD::kUser_Line2, 
+				"ctrl right: %f", config.control->right());
+		
+		config.lcd->PrintfLine(DriverStationLCD::kUser_Line3, 
+				"ctrl throttle: %f", config.control->throttle());
+		
+		config.lcd->PrintfLine(DriverStationLCD::kUser_Line4, 
+				"ctrl reversed: %s", config.control->isReversed()?"true":"false");
+		
+		config.lcd->UpdateLCD();
 	}
 };
 

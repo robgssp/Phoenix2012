@@ -1,14 +1,22 @@
-#ifndef PHOENIXCONFIG_H
-#define PHOENIXCONFIG_H
+#ifndef CONFIG_H
+#define CONFIG_H
 #include "WPILib.h"
 #include <vector>
 
-namespace ProtoConfig {
-typedef CANJaguar Motor;
-std::vector<int> leftMotors();
-std::vector<int> rightMotors();
-};
+class Control;
+class Drive;
+class Autonomous;
 
-namespace Config = ProtoConfig;
+class Config {
+public:	
+	std::vector<CANJaguar *> leftMotors();
+	std::vector<CANJaguar *> rightMotors();
+	DriverStationLCD *lcd;
+	Drive *drive;
+	Control *control;
+	Relay *driveLight;
+	AnalogChannel *ultrasonic;	
+	Autonomous *autonomous;
+};
 
 #endif

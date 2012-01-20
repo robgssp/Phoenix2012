@@ -5,7 +5,7 @@
 #include <vector>
 
 struct MotorProperty {
-	Config::Motor *motor;
+	CANJaguar *motor;
 	double defaultScale;
 };
 
@@ -15,17 +15,18 @@ class Drive {
 	MotorVector rightMotors_;
 	double scale_;
 	bool reversed_;
+	Config *config_;
 	
 public:
 	enum Side { Left, Right };
-	Drive();
-	Drive(MotorVector, MotorVector);
+	Drive(Config *config);
 	virtual ~Drive();
 	void setLeft(double value);
 	void setRight(double value);
 	void setScale(double value);
 	void setReversed(bool reversed);
-	void addMotor(Side, Config::Motor *, double defaultScale);
+	void addMotor(Side, CANJaguar *, double defaultScale);
+	void updateLight();
 };
 
 #endif
