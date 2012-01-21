@@ -1,8 +1,8 @@
 #include "Drive.h"
 #include <algorithm>
 
-Drive::Drive(Config *config) { 
-	this->config_ = config;
+Drive::Drive(Robot *robot) { 
+	this->robot_ = robot;
 	scale_ = 1;
 }
 
@@ -15,20 +15,19 @@ Drive::~Drive() {
 }
 
 void Drive::setLeft(double value) {
-	MotorVector &motors = (reversed_ ? leftMotors_ : rightMotors_);
-	MotorVector::iterator iter;
-	for(iter = motors.begin(); iter != motors.end(); ++iter) {
-		MotorProperty &m = *iter;
-		m.motor->Set(value * scale_ * m.defaultScale);
-	}
+	setMotors((reversed_ ? leftMotors_ : rightMotors_), value);
 }
 
 void Drive::setRight(double value) {
-	MotorVector &motors = (reversed_ ? rightMotors_ : leftMotors_);
+	setMotors((reversed_ ? rightMotors_ : leftMotors_), value);
+}
+
+void Drive::setMotors(MotorVector &motors, double value) {
 	MotorVector::iterator iter;
 	for(iter = motors.begin(); iter != motors.end(); ++iter) {
 		MotorProperty &m = *iter;
-		m.motor->Set(value * scale_ * m.defaultScale);
+		m.motor->Set(value * scale_ * m.defaultScale *
+				(reversed_ ? -1 : 1));
 	}
 }
 

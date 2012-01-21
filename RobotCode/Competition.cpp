@@ -1,60 +1,73 @@
 #include "WPILib.h"
-#include "Config.h"
+#include "Robot.h"
 #include "Drive.h"
 #include "Control.h"
 #include "Autonomous.h"
 
 class PhoenixRobot : public IterativeRobot {
-	Config config;
+	Robot robot;
 
 public:
 	PhoenixRobot() {
-		config.lcd = DriverStationLCD::GetInstance();
-		config.drive = new Drive(&config);
-		std::vector<CANJaguar *> motors = config.leftMotors();
+		robot.lcd = DriverStationLCD::GetInstance();
+		robot.drive = new Drive(&robot);
+		std::vector<CANJaguar *> motors = robot.leftMotorIds();
 		for(size_t i = 0; i < motors.size(); ++i) {
-			config.drive->addMotor(Drive::Left, motors[i], -1);
+			robot.drive->addMotor(Drive::Left, motors[i], -1);
 		}
-		motors = config.rightMotors();
+		motors = robot.rightMotorIds();
 		for(size_t i = 0; i < motors.size(); ++i) {
-			config.drive->addMotor(Drive::Right, motors[i], -1);
+			robot.drive->addMotor(Drive::Right, motors[i], 1);
 		}
 		
-		config.control = new Control(
+		robot.control = new Control(
 				new Joystick(1), new Joystick(2), Control::Tank);
 		
-		config.control->setLeftScale(-1);
-		config.control->setRightScale(-1);
-		config.ultrasonic = new AnalogChannel(5);
-		config.driveLight = new Relay(5);
+		robot.control->setLeftScale(-1);
+		robot.control->setRightScale(-1);
+		robot.ultrasonic = new AnalogChannel(5);
+		robot.gyroChannel = new AnalogChannel(4);
+		robot.gyro = new Gyro(robot.gyroChannel);
+		robot.gyro->Reset();
 	}
 	
 	void AutonomousInit() {
-		config.autonomous = new BridgeAutonomous;
+		robot.autonomous = new ScoreAutonomous(&robot);
+		robot.drive->setReversed(true);
 	}
 	
 	void AutonomousPeriodic() {
-		config.autonomous->loop();
+		robot.autonomous->loop();
+	}
+	
+	void AutonomousDisabled() {
+		delete robot.autonomous;
 	}
 
 	void TeleopPeriodic() {
-		config.drive->setLeft(config.control->left());
-		config.drive->setRight(config.control->right());
-		config.drive->setScale(config.control->throttle());
-		config.drive->setReversed(config.control->isReversed());
-		config.lcd->PrintfLine(DriverStationLCD::kUser_Line1, 
-				"ctrl left: %f", config.control->left());
+		robot.drive->setLeft(robot.control->left());
+		robot.drive->setRight(robot.control->right());
+		robot.drive->setScale(robot.control->throttle());
+		robot.drive->setReversed(robot.control->isReversed());
+		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line1, 
+				"ctrl left: %f", robot.control->left());
 		
-		config.lcd->PrintfLine(DriverStationLCD::kUser_Line2, 
-				"ctrl right: %f", config.control->right());
+		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line2, 
+				"ctrl right: %f", robot.control->right());
 		
-		config.lcd->PrintfLine(DriverStationLCD::kUser_Line3, 
-				"ctrl throttle: %f", config.control->throttle());
+		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line3, 
+				"ctrl throttle: %f", robot.control->throttle());
 		
-		config.lcd->PrintfLine(DriverStationLCD::kUser_Line4, 
-				"ctrl reversed: %s", config.control->isReversed()?"true":"false");
+		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line4, 
+				"ctrl reversed: %s", robot.control->isReversed()?"true":"false");
 		
-		config.lcd->UpdateLCD();
+		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line5,
+				"Ultrasonic: %d", robot.ultrasonic->GetValue());
+		
+		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line6,
+				"Gyro: %f", robot.gyroChannel->GetValue());
+		
+		robot.lcd->UpdateLCD();
 	}
 };
 
