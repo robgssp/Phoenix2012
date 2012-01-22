@@ -24,6 +24,7 @@ public:
 	Autonomous *autonomous;
 	AnalogChannel *gyroChannel;
 	Gyro *gyro;
+	DigitalInput *touchSensor;
 };
 
 #endif
