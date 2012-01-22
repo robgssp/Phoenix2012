@@ -32,7 +32,11 @@ public:
 class BridgeAutonomous : public Autonomous {
 	enum States { DriveToBridge, PushDownBridge };
 	States state;
+	Robot *robot_;
+	int count;
 public:
+	BridgeAutonomous(Robot *robot);
+	
 	void loop();
 };
 

@@ -29,6 +29,7 @@ public:
 		robot.gyroChannel = new AnalogChannel(4);
 		robot.gyro = new Gyro(robot.gyroChannel);
 		robot.gyro->Reset();
+		//robot.touchSensor = new DigitalInput(4);
 	}
 	
 	void AutonomousInit() {
