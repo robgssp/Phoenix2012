@@ -33,7 +33,7 @@ public:
 	}
 	
 	void AutonomousInit() {
-		robot.autonomous = new ScoreAutonomous(&robot );
+		robot.autonomous = new ScoreAutonomous(&robot);
 	}
 	
 	void AutonomousPeriodic() {
