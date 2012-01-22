@@ -15,7 +15,8 @@ struct MotorProperty {
  */
 class Drive {
 	typedef std::vector<MotorProperty> MotorVector;
-	void setMotors(MotorVector &motors, double value);
+	void setMotors(const MotorVector &motors, double value);
+	double motorVoltage(const MotorVector &motors);
 	MotorVector leftMotors_;
 	MotorVector rightMotors_;
 	double scale_;

@@ -22,22 +22,41 @@ void Drive::setRight(double value) {
 	setMotors((reversed_ ? rightMotors_ : leftMotors_), value);
 }
 
-void Drive::setMotors(MotorVector &motors, double value) {
-	MotorVector::iterator iter;
+
+void Drive::setMotors(const MotorVector &motors, double value) {
+	MotorVector::const_iterator iter;
 	for(iter = motors.begin(); iter != motors.end(); ++iter) {
-		MotorProperty &m = *iter;
+		const MotorProperty &m = *iter;
 		m.motor->Set(value * scale_ * m.defaultScale *
 				(reversed_ ? -1 : 1));
 	}
 }
 
+void Drive::setScale(double value) {
+	scale_ = (value > 1.0 ? 1.0 : (value < 0.0 ? 0.0 : value));
+}
+
+double Drive::leftVoltage() {
+	return motorVoltage(reversed_ ? leftMotors_ : rightMotors_);
+}
+
+double Drive::rightVoltage() {
+	return motorVoltage(reversed_ ? rightMotors_ : leftMotors_);
+}
+
+double Drive::motorVoltage(const MotorVector &motors) {
+	double total = 0;
+	MotorVector::const_iterator iter;
+	for(iter = motors.begin(); iter != motors.end(); ++iter) {
+		const MotorProperty &m = *iter;
+		total += m.motor->GetOutputVoltage();
+	}
+	return total / motors.size();
+}
+
 void Drive::addMotor(Side side, CANJaguar *motor, double defaultScale) {
 	MotorProperty m = { motor, defaultScale };
 	(side == Left ? leftMotors_ : rightMotors_).push_back(m);
-}
-
-void Drive::setScale(double value) {
-	scale_ = (value > 1.0 ? 1.0 : (value < 0.0 ? 0.0 : value));
 }
 
 void Drive::setReversed(bool reversed) {

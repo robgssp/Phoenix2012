@@ -5,6 +5,7 @@ ScoreAutonomous::ScoreAutonomous(Robot *robot) {
 	state = DriveToBasket;
 	for(int i = 0; i < 3; ++i) distances[i] = 500;
 	this->robot_ = robot;
+	robot.drive->setReversed(true);
 }
 
 void ScoreAutonomous::loop() {

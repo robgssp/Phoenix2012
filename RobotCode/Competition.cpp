@@ -33,7 +33,6 @@ public:
 	
 	void AutonomousInit() {
 		robot.autonomous = new ScoreAutonomous(&robot);
-		robot.drive->setReversed(true);
 	}
 	
 	void AutonomousPeriodic() {
