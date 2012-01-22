@@ -5,7 +5,7 @@ ScoreAutonomous::ScoreAutonomous(Robot *robot) {
 	state = DriveToBasket;
 	for(int i = 0; i < 3; ++i) distances[i] = 500;
 	this->robot_ = robot;
-	robot.drive->setReversed(true);
+	robot_->drive->setReversed(true);
 }
 
 void ScoreAutonomous::loop() {
@@ -26,7 +26,7 @@ void ScoreAutonomous::loop() {
 		robot_->drive->setLeft(0.5);
 		robot_->drive->setRight(0.5);
 		robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line1, "Moving...");
-		robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line2, "Dist: ", averageDist);
+		robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line2, "Dist: %d", averageDist);
 		robot_->lcd->UpdateLCD();
 	}
 } 

@@ -36,20 +36,20 @@ void Drive::setScale(double value) {
 	scale_ = (value > 1.0 ? 1.0 : (value < 0.0 ? 0.0 : value));
 }
 
-double Drive::leftVoltage() {
-	return motorVoltage(reversed_ ? leftMotors_ : rightMotors_);
+double Drive::leftCurrent() {
+	return motorCurrent(reversed_ ? leftMotors_ : rightMotors_);
 }
 
-double Drive::rightVoltage() {
-	return motorVoltage(reversed_ ? rightMotors_ : leftMotors_);
+double Drive::rightCurrent() {
+	return motorCurrent(reversed_ ? rightMotors_ : leftMotors_);
 }
 
-double Drive::motorVoltage(const MotorVector &motors) {
+double Drive::motorCurrent(const MotorVector &motors) {
 	double total = 0;
 	MotorVector::const_iterator iter;
 	for(iter = motors.begin(); iter != motors.end(); ++iter) {
 		const MotorProperty &m = *iter;
-		total += m.motor->GetOutputVoltage();
+		total += m.motor->GetOutputCurrent();
 	}
 	return total / motors.size();
 }
