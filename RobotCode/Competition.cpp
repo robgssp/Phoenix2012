@@ -27,8 +27,8 @@ public:
 		robot.control->setRightScale(-1);
 		robot.ultrasonic = new AnalogChannel(5);
 		robot.gyroChannel = new AnalogChannel(4);
-		robot.gyro = new Gyro(robot.gyroChannel);
-		robot.gyro->Reset();
+		//robot.gyro = new Gyro(robot.gyroChannel);
+		//robot.gyro->Reset();
 		//robot.touchSensor = new DigitalInput(4);
 	}
 	
@@ -49,23 +49,11 @@ public:
 		robot.drive->setRight(robot.control->right());
 		robot.drive->setScale(robot.control->throttle());
 		robot.drive->setReversed(robot.control->isReversed());
-		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line1, 
-				"ctrl left: %f", robot.control->left());
-		
-		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line2, 
-				"ctrl right: %f", robot.control->right());
-		
-		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line3, 
-				"ctrl throttle: %f", robot.control->throttle());
-		
-		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line4, 
-				"ctrl reversed: %s", robot.control->isReversed()?"true":"false");
-		
-		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line5,
-				"Ultrasonic: %d", robot.ultrasonic->GetValue());
-		
-		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line6,
-				"Gyro: %f", robot.gyroChannel->GetValue());
+		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line1,
+				"Left Voltage: %f", robot.drive->leftCurrent());
+				
+		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line2,
+				"Right Voltage: %f", robot.drive->rightCurrent());
 		
 		robot.lcd->UpdateLCD();
 	}

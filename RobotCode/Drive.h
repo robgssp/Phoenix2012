@@ -15,10 +15,10 @@ struct MotorProperty {
  */
 class Drive {
 	typedef std::vector<MotorProperty> MotorVector;
-	void setMotors(const MotorVector &motors, double value);
-	double motorVoltage(const MotorVector &motors);
 	MotorVector leftMotors_;
 	MotorVector rightMotors_;
+	void setMotors(const MotorVector &motors, double value);
+	double motorCurrent(const MotorVector &motors);
 	double scale_;
 	bool reversed_;
 	Robot *robot_;
@@ -30,8 +30,8 @@ public:
 	void setLeft(double value);
 	void setRight(double value);
 	void setScale(double value);
-	double leftVoltage();
-	double rightVoltage();
+	double leftCurrent();
+	double rightCurrent();
 	void setReversed(bool reversed);
 	void addMotor(Side, CANJaguar *, double defaultScale);
 	void updateLight();
