@@ -31,8 +31,19 @@ void ScoreAutonomous::loop() {
 		for(int i = 0; i < 3; ++i) averageDist += distances[i];
 		averageDist /= 3;
 		if (averageDist <= 60) { state = End; return; }
-		robot_->drive->setLeft(0.5);
-		robot_->drive->setRight(0.5);
+		int Anglea;
+			if (Anglea >= 2) {
+				robot_->drive->setLeft(.6);
+				robot_->drive->setRight(.5);	
+			}
+			if (Anglea <= 2) {
+				robot_->drive->setLeft(.5);
+				robot_->drive->setRight(.6);	
+			}
+			else {
+				robot_->drive->setLeft(.5);
+				robot_->drive->setRight(.5);	
+			}
 		robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line1, "Moving...");
 		robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line2, "Dist: %d", averageDist);
 		robot_->lcd->UpdateLCD();

@@ -6,6 +6,7 @@
 class Control;
 class Drive;
 class Autonomous;
+class BcdSwitch;
 
 /** 
  * Container class for robot components
@@ -25,6 +26,7 @@ public:
 	AnalogChannel *gyroChannel;
 	Gyro *gyro;
 	DigitalInput *touchSensor;
+	BcdSwitch *bcd;
 };
 
 #endif
