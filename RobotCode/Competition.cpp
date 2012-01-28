@@ -27,7 +27,7 @@ public:
 		robot.control->setLeftScale(-1);
 		robot.control->setRightScale(-1);
 		robot.ultrasonic = new AnalogChannel(5);
-		robot.gyroChannel = new AnalogChannel(4);
+		robot.gyroChannel = new AnalogChannel(1);
 		robot.gyro = new Gyro(robot.gyroChannel);
 		robot.gyro->Reset();
 		//robot.touchSensor = new DigitalInput(4);
@@ -61,8 +61,10 @@ public:
 				"Left Voltage: %f", robot.drive->leftCurrent());
 				
 		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line2,
-				"Right Voltage: %f", robot.drive->rightCurrent());
+				"Right Voltage: %f", robot.drive->rightCurrent());	
 		
+		float angle = robot.gyro->GetAngle();
+		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line3, "%f", angle);
 		robot.lcd->UpdateLCD();
 	}
 };
