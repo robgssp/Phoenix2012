@@ -25,6 +25,7 @@ public:
 	AnalogChannel *gyroChannel;
 	Gyro *gyro;
 	DigitalInput *touchSensor;
+	AxisCamera *camera;
 };
 
 #endif
