@@ -3,6 +3,7 @@
 #include "Drive.h"
 #include "Control.h"
 #include "Autonomous.h"
+#include "BcdSwitch.h"
 
 class PhoenixRobot : public IterativeRobot {
 	Robot robot;
@@ -27,14 +28,21 @@ public:
 		robot.control->setLeftScale(-1);
 		robot.control->setRightScale(-1);
 		robot.ultrasonic = new AnalogChannel(5);
-		robot.gyroChannel = new AnalogChannel(4);
+		robot.gyroChannel = new AnalogChannel(1);
 		robot.gyro = new Gyro(robot.gyroChannel);
 		robot.gyro->Reset();
 		//robot.touchSensor = new DigitalInput(4);
+		robot.bcd = new BcdSwitch(1, 2);
 	}
 	
 	void AutonomousInit() {
-		robot.autonomous = new ScoreAutonomous(&robot);
+		int value = robot.bcd->value();
+		if (value == 1)
+			robot.autonomous = new ScoreAutonomous(&robot);
+		if (value == 2)
+			robot.autonomous = new ScoreAutonomous(&robot);
+		else 
+			robot.autonomous = new Autonomous();
 	}
 	
 	void AutonomousPeriodic() {
@@ -58,7 +66,9 @@ public:
 		
 		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line3,
 				"Gyro: %f", robot.gyro->GetAngle());
-		
+
+		float angle = robot.gyro->GetAngle();
+		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line3, "%f", angle);
 		robot.lcd->UpdateLCD();
 	}
 };

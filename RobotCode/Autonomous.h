@@ -19,6 +19,7 @@ class ScoreAutonomous : public Autonomous {
 	enum States { DriveToBasket, DumpBalls, End };
 	// storing the past 3 ultrasonic values for averaging
 	int distances[3];
+	float lastMotorSpeed;
 	States state;
 	Robot *robot_;
 public:
