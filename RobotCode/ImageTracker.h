@@ -6,16 +6,16 @@
 
 class ImageTracker {
 	Robot *robot_;
-	Image *image;
-	std::vector<RectangleMatch> matches;
+	Image *image_;
+	Image *processedImage_;
+	std::vector<RectangleMatch> matches_;
+	int loopCount_;
 public:
 	ImageTracker(Robot *robot);
-	/**
-	 * Gets the latest image from the camera and analyzes it.
-	 * Use horizOffset() for tracking purposes.
-	 */
 	void updateImage();
 	double horizOffset();
+	void writeFiles();
+	std::vector<RectangleMatch> matches();
 };
 
 #endif

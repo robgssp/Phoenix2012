@@ -7,6 +7,8 @@ class Control;
 class Drive;
 class Autonomous;
 class BcdSwitch;
+class ImageTracker;
+class Log;
 
 /** 
  * Container class for robot components
@@ -28,6 +30,8 @@ public:
 	DigitalInput *touchSensor;
 	AxisCamera *camera;
 	BcdSwitch *bcd;
+	ImageTracker *imageTracker;
+	Log *log;
 };
 
 #endif
