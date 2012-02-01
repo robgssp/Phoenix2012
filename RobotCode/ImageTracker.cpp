@@ -37,14 +37,9 @@ static RectangleDescriptor rectangleDescriptor = {
  * Use horizOffset() for tracking purposes.
  */
 void ImageTracker::updateImage() {
-	robot_->camera->GetImage(image_);
-	
-	//imaqWriteFile(image_, "/raw.png", NULL);
-	
+	robot_->camera.GetImage(image_);
 	imaqColorThreshold(processedImage_, image_, 255, IMAQ_HSL, &selectAll, &selectAll, &selectLuminance);
-	
-	imaqWriteFile(processedImage_, "/analyzed", NULL);
-	
+		
 	int numParticles = 0;
 	imaqParticleFilter4(processedImage_, processedImage_, particleCiteria, 2, &particleOpts, NULL, &numParticles);
 	robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line1, "%d particles", numParticles);
@@ -52,9 +47,10 @@ void ImageTracker::updateImage() {
 	int matchCount = 0;
 	RectangleMatch *temp = imaqDetectRectangles(
 			processedImage_, &rectangleDescriptor, NULL, NULL, NULL, &matchCount);
-	robot_->log->info("%d matches", matchCount);
 	
+	robot_->log->info("%d matches", matchCount);
 	robot_->log->info("looped %d times", ++loopCount_);
+	
 	matches_.clear();
 	for(int i = 0; i < matchCount; ++i) matches_.push_back(temp[i]);
 	imaqDispose(temp);

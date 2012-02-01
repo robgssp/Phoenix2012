@@ -54,6 +54,12 @@ double Drive::motorCurrent(const MotorVector &motors) {
 	return total / motors.size();
 }
 
+/**
+ * Adds a motor to the drive control vectors
+ * @param side Side for the motor
+ * @param motor Motor to add
+ * @param defaultScale scale for the motor to run at
+ */
 void Drive::addMotor(Side side, CANJaguar *motor, double defaultScale) {
 	MotorProperty m = { motor, defaultScale };
 	(side == Left ? leftMotors_ : rightMotors_).push_back(m);
