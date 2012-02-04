@@ -3,8 +3,8 @@
 
 ImageTracker::ImageTracker(Robot *robot) {
 	this->robot_ = robot;
-	image_ = imaqCreateImage(IMAQ_IMAGE_HSL, 1);
-	processedImage_ = imaqCreateImage(IMAQ_IMAGE_U8, 1);
+	image_ = imaqCreateImage(IMAQ_IMAGE_HSL, DEFAULT_BORDER_SIZE);
+	processedImage_ = imaqCreateImage(IMAQ_IMAGE_U8, DEFAULT_BORDER_SIZE);
 	processedImage_ = NULL;
 	loopCount_ = 0;
 }
@@ -37,12 +37,16 @@ static RectangleDescriptor rectangleDescriptor = {
  * Use horizOffset() for tracking purposes.
  */
 void ImageTracker::updateImage() {
-	robot_->camera.GetImage(image_);
-	imaqColorThreshold(processedImage_, image_, 255, IMAQ_HSL, &selectAll, &selectAll, &selectLuminance);
-		
+	robot_->camera->GetImage(image_);
+	
+	imaqDispose(processedImage_);
+	imaqCreateImage(IMAQ_IMAGE_U8, DEFAULT_BORDER_SIZE);
+	imaqExtractColorPlanes(image_, IMAQ_HSL, NULL, NULL, processedImage_);
+	
+	imaqThreshold(processedImage_, processedImage_, 230, 255, TRUE, 1.0);
+	
 	int numParticles = 0;
 	imaqParticleFilter4(processedImage_, processedImage_, particleCiteria, 2, &particleOpts, NULL, &numParticles);
-	robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line1, "%d particles", numParticles);
 	
 	int matchCount = 0;
 	RectangleMatch *temp = imaqDetectRectangles(

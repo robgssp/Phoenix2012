@@ -4,13 +4,12 @@
 #include "ImageTracker.h"
 #include "Log.h"
 
-Robot::Robot(Type type) : camera(AxisCamera::GetInstance()) {
+Robot::Robot(Type type) {
 	this->type_ = type;	
 
-	camera.WriteMaxFPS(AxisCameraParams::kResolution_320x240);
-	compressor = new Compressor(1, 4);
-	compressor->Start();
-	imageTracker = new ImageTracker(this);
+	//camera = &AxisCamera::GetInstance();
+	//camera->WriteMaxFPS(AxisCameraParams::kResolution_320x240);
+	//imageTracker = new ImageTracker(this);
 	log = new Log(this);
 	control = new Control(
 			new Joystick(1), new Joystick(2), Control::Tank);
@@ -22,11 +21,11 @@ Robot::Robot(Type type) : camera(AxisCamera::GetInstance()) {
 	
 	switch(type) {
 	case BotProto:
-		drive->addMotor(Drive::Left, new CANJaguar(2), -1);
-		drive->addMotor(Drive::Left, new CANJaguar(3), -1);
-		drive->addMotor(Drive::Right, new CANJaguar(6), 1);
-		drive->addMotor(Drive::Right, new CANJaguar(7), 1);
-		
+		compressor->Start();
+		drive->addMotor(Drive::Left, 2, -1);
+		drive->addMotor(Drive::Left, 3, -1);
+		drive->addMotor(Drive::Right, 6, 1);
+		drive->addMotor(Drive::Right, 7, 1);
 		
 		ultrasonic = new AnalogChannel(5);
 		gyroChannel = new AnalogChannel(1);
@@ -37,14 +36,15 @@ Robot::Robot(Type type) : camera(AxisCamera::GetInstance()) {
 		//imageTracker = new ImageTracker(this);
 		break;
 	case BotFinal:
-		drive->addMotor(Drive::Left, new CANJaguar(2), -1);
-		drive->addMotor(Drive::Left, new CANJaguar(3), -1);
-		drive->addMotor(Drive::Right, new CANJaguar(4), 1);
-		drive->addMotor(Drive::Right, new CANJaguar(5), 1);
+		compressor = new Compressor(1, 4);
+		drive->addMotor(Drive::Left, 2, -1);
+		drive->addMotor(Drive::Left, 3, -1);
+		drive->addMotor(Drive::Right, 4, 1);
+		drive->addMotor(Drive::Right, 5, 1);
 		
-		ultrasonic = new AnalogChannel(5);
-		gyroChannel = new AnalogChannel(1);
-		gyro = new Gyro(gyroChannel);
+		//ultrasonic = new AnalogChannel(2);
+		//gyroChannel = new AnalogChannel(1);
+		//gyro = new Gyro(gyroChannel);
 		//robot.touchSensor = new DigitalInput(4);
 		//robot.bcd = new BcdSwitch(1, 2);
 		break;

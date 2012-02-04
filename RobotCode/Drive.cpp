@@ -60,8 +60,8 @@ double Drive::motorCurrent(const MotorVector &motors) {
  * @param motor Motor to add
  * @param defaultScale scale for the motor to run at
  */
-void Drive::addMotor(Side side, CANJaguar *motor, double defaultScale) {
-	MotorProperty m = { motor, defaultScale };
+void Drive::addMotor(Side side, int port, double defaultScale) {
+	MotorProperty m = { new CANJaguar(port), defaultScale };
 	(side == Left ? leftMotors_ : rightMotors_).push_back(m);
 }
 

@@ -27,7 +27,7 @@ public:
 	AnalogChannel *gyroChannel;
 	Gyro *gyro;
 	DigitalInput *touchSensor;
-	AxisCamera &camera;
+	AxisCamera *camera;
 	BcdSwitch *bcd;
 	ImageTracker *imageTracker;
 	Log *log;

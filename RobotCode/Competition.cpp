@@ -11,7 +11,7 @@ class Competition : public IterativeRobot {
 	Robot robot;
 
 public:
-	Competition() : robot(Robot::BotProto) {
+	Competition() : robot(Robot::BotFinal) {
 
 	}
 	
@@ -47,7 +47,7 @@ public:
 				
 		robot.log->info("Right Current: %f", robot.drive->rightCurrent());
 		
-		robot.log->info("Gyro: %f", robot.gyro->GetAngle());
+		//robot.log->info("Gyro: %f", robot.gyro->GetAngle());
 		robot.log->print();
 		
 		/*
