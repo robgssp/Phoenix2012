@@ -41,4 +41,13 @@ public:
 	void loop();
 };
 
+class GyroAutonomousTest : public Autonomous {
+	Robot *robot_;
+	float angle;
+public:
+	GyroAutonomousTest(Robot *robot);
+	
+	void loop();
+};
+
 #endif

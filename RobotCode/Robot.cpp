@@ -24,8 +24,8 @@ Robot::Robot(Type type) {
 		compressor->Start();
 		drive->addMotor(Drive::Left, 2, -1);
 		drive->addMotor(Drive::Left, 3, -1);
-		drive->addMotor(Drive::Right, 6, 1);
-		drive->addMotor(Drive::Right, 7, 1);
+		drive->addMotor(Drive::Right, 4, 1);
+		drive->addMotor(Drive::Right, 5, 1);
 		
 		ultrasonic = new AnalogChannel(5);
 		gyroChannel = new AnalogChannel(1);

@@ -31,6 +31,7 @@ void ScoreAutonomous::loop() {
 		for(int i = 0; i < 3; ++i) averageDist += distances[i];
 		averageDist /= 3;
 		if (averageDist <= 60) { state = End; return; }
+		/*
 		int Anglea;
 			if (Anglea >= 2) {
 				robot_->drive->setLeft(.6);
@@ -44,6 +45,9 @@ void ScoreAutonomous::loop() {
 				robot_->drive->setLeft(.5);
 				robot_->drive->setRight(.5);	
 			}
+		*/
+		robot_->drive->setLeft(.5);
+		robot_->drive->setRight(.5);
 		robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line1, "Moving...");
 		robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line2, "Dist: %d", averageDist);
 		robot_->lcd->UpdateLCD();
@@ -81,5 +85,21 @@ void BridgeAutonomous::loop() {
 	    else{
 	    	//armMotor->Set(-.5);
 	    }
+	}
+}
+
+void GyroAutonomousTest::loop() {
+	angle = robot_->gyro->GetAngle();
+	if (angle > 6) { //6 is troubleshootable
+		robot_->drive->setLeft(1/(angle/10)); //can be troubleshooted
+		robot_->drive->setRight(1/(angle/10));
+	}
+	else if (angle < -6) {
+		robot_->drive->setLeft(1/(angle/10)); 
+		robot_->drive->setRight(1/(angle/10));
+	}
+	else {
+		robot_->drive->setLeft(0); 
+		robot_->drive->setRight(0);
 	}
 }
