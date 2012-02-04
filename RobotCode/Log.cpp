@@ -11,6 +11,7 @@ static const DriverStationLCD::Line lines[] = {
 
 Log::Log(Robot *robot) {
 	this->robot_ = robot;
+	this->lcd_ = DriverStationLCD::GetInstance();
 }
 
 void Log::info(const char *text, ...) { 
@@ -35,17 +36,17 @@ void Log::print() {
 	int line = 0;
 	printVec(error_, line);
 	printVec(info_, line);
-	robot_->lcd->UpdateLCD();
+	lcd_->UpdateLCD();
 }
 
 void Log::printVec(std::vector<std::string> &vec, int &line) {
 	std::vector<std::string>::iterator iter;
 	for(iter = vec.begin(); iter != vec.end(); ++iter) {
 		if(line == 6) { 
-			robot_->lcd->PrintfLine(lines[5], "...more...");
+			lcd_->PrintfLine(lines[5], "...more...");
 			break;
 		}
-		robot_->lcd->PrintfLine(lines[line], "%s", (*iter).c_str());
+		lcd_->PrintfLine(lines[line], "%s", (*iter).c_str());
 		++line;
 	}
 	vec.clear();
