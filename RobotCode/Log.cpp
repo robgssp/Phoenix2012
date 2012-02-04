@@ -13,38 +13,40 @@ Log::Log(Robot *robot) {
 	this->robot_ = robot;
 }
 
-void Log::info(std::string text, ...) { 
+void Log::info(const char *text, ...) { 
 	char buf[100];
+	buf[99] = '\0';
 	va_list vl;
 	va_start(vl, text);
-	vsnprintf(buf, 100, text.c_str(), vl);
-	info_.push_back(std::string(buf, 100)); 
+	vsnprintf(buf, 100, text, vl);
+	info_.push_back(std::string(buf)); 
 }
 
-void Log::error(std::string text, ...) { 
+void Log::error(const char *text, ...) { 
 	char buf[100];
+	buf[99] = '\0';
 	va_list vl;
 	va_start(vl, text);
-	vsnprintf(buf, 100, text.c_str(), vl);
-	error_.push_back(std::string(buf, 100)); 
+	vsnprintf(buf, 100, text, vl);
+	error_.push_back(std::string("e:") + std::string(buf)); 
 }
 
 void Log::print() {
-	int freeLines = 6;
-	printVec(error_, freeLines);
-	printVec(info_, freeLines);
+	int line = 0;
+	printVec(error_, line);
+	printVec(info_, line);
+	robot_->lcd->UpdateLCD();
 }
 
-void Log::printVec(std::vector<std::string> &vec, int &freeLines) {
-	if(freeLines < 1) return;
-	
-	for(size_t i = 0; i < vec.size(); ++i) {
-		if(freeLines == 1) {
+void Log::printVec(std::vector<std::string> &vec, int &line) {
+	std::vector<std::string>::iterator iter;
+	for(iter = vec.begin(); iter != vec.end(); ++iter) {
+		if(line == 6) { 
 			robot_->lcd->PrintfLine(lines[5], "...more...");
 			break;
 		}
-		
-		robot_->lcd->PrintfLine(lines[6 - freeLines--], vec[i].c_str());
+		robot_->lcd->PrintfLine(lines[line], "%s", (*iter).c_str());
+		++line;
 	}
 	vec.clear();
 }

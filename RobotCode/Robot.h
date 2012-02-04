@@ -15,10 +15,9 @@ class Log;
  */
 class Robot {
 public:	
-	/// CAN IDs for motor controllers
-	std::vector<CANJaguar *> leftMotorIds();
-	/// ditto
-	std::vector<CANJaguar *> rightMotorIds();
+	enum Type { BotProto, BotFinal };
+	Robot(Type type);
+	virtual ~Robot();
 	DriverStationLCD *lcd;
 	Drive *drive;
 	Control *control;
@@ -32,6 +31,9 @@ public:
 	BcdSwitch *bcd;
 	ImageTracker *imageTracker;
 	Log *log;
+	Compressor *compressor;
+private:
+	Type type_;
 };
 
 #endif

@@ -3,8 +3,8 @@
 
 ImageTracker::ImageTracker(Robot *robot) {
 	this->robot_ = robot;
-	image_ = imaqCreateImage(IMAQ_IMAGE_HSL, 1);
-	processedImage_ = imaqCreateImage(IMAQ_IMAGE_U8, 1);
+	image_ = imaqCreateImage(IMAQ_IMAGE_HSL, DEFAULT_BORDER_SIZE);
+	processedImage_ = imaqCreateImage(IMAQ_IMAGE_U8, DEFAULT_BORDER_SIZE);
 	processedImage_ = NULL;
 	loopCount_ = 0;
 }
@@ -39,22 +39,22 @@ static RectangleDescriptor rectangleDescriptor = {
 void ImageTracker::updateImage() {
 	robot_->camera->GetImage(image_);
 	
-	//imaqWriteFile(image_, "/raw.png", NULL);
+	imaqDispose(processedImage_);
+	imaqCreateImage(IMAQ_IMAGE_U8, DEFAULT_BORDER_SIZE);
+	imaqExtractColorPlanes(image_, IMAQ_HSL, NULL, NULL, processedImage_);
 	
-	imaqColorThreshold(processedImage_, image_, 255, IMAQ_HSL, &selectAll, &selectAll, &selectLuminance);
-	
-	imaqWriteFile(processedImage_, "/analyzed", NULL);
+	imaqThreshold(processedImage_, processedImage_, 230, 255, TRUE, 1.0);
 	
 	int numParticles = 0;
 	imaqParticleFilter4(processedImage_, processedImage_, particleCiteria, 2, &particleOpts, NULL, &numParticles);
-	robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line1, "%d particles", numParticles);
 	
 	int matchCount = 0;
 	RectangleMatch *temp = imaqDetectRectangles(
 			processedImage_, &rectangleDescriptor, NULL, NULL, NULL, &matchCount);
-	robot_->log->info("%d matches", matchCount);
 	
+	robot_->log->info("%d matches", matchCount);
 	robot_->log->info("looped %d times", ++loopCount_);
+	
 	matches_.clear();
 	for(int i = 0; i < matchCount; ++i) matches_.push_back(temp[i]);
 	imaqDispose(temp);

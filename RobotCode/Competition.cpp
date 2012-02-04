@@ -7,37 +7,12 @@
 #include "ImageTracker.h"
 #include "Log.h"
 
-class PhoenixRobot : public IterativeRobot {
+class Competition : public IterativeRobot {
 	Robot robot;
 
 public:
-	PhoenixRobot() {
-		robot.lcd = DriverStationLCD::GetInstance();
-		robot.camera = &AxisCamera::GetInstance();
-		robot.camera->WriteMaxFPS(AxisCameraParams::kResolution_320x240);
-		robot.drive = new Drive(&robot);
-		std::vector<CANJaguar *> motors = robot.leftMotorIds();
-		for(size_t i = 0; i < motors.size(); ++i) {
-			robot.drive->addMotor(Drive::Left, motors[i], -1);
-		}
-		motors = robot.rightMotorIds();
-		for(size_t i = 0; i < motors.size(); ++i) {
-			robot.drive->addMotor(Drive::Right, motors[i], 1);
-		}
-		
-		robot.control = new Control(
-				new Joystick(1), new Joystick(2), Control::Tank);
-		
-		robot.control->setLeftScale(-1);
-		robot.control->setRightScale(-1);
-		robot.ultrasonic = new AnalogChannel(5);
-		robot.gyroChannel = new AnalogChannel(1);
-		robot.gyro = new Gyro(robot.gyroChannel);
-		robot.gyro->Reset();
-		//robot.touchSensor = new DigitalInput(4);
-		//robot.bcd = new BcdSwitch(1, 2);
-		robot.imageTracker = new ImageTracker(&robot);
-		robot.log = new Log(&robot);
+	Competition() : robot(Robot::BotFinal) {
+
 	}
 	
 	void AutonomousInit() {
@@ -59,9 +34,6 @@ public:
 	}
 	
 	void TeleopInit() {
-		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line1,
-				"Starting teleop...");
-		robot.lcd->UpdateLCD();
 		//robot.imageTracker->updateImage();
 		//robot.imageTracker->writeFiles();
 	}
@@ -75,9 +47,8 @@ public:
 				
 		robot.log->info("Right Current: %f", robot.drive->rightCurrent());
 		
-		robot.log->info("Gyro: %f", robot.gyro->GetAngle());
-
-		robot.lcd->PrintfLine(DriverStationLCD::kUser_Line3, "%f", robot.gyro->GetAngle());
+		//robot.log->info("Gyro: %f", robot.gyro->GetAngle());
+		robot.log->print();
 		
 		/*
 		// Print out shape matches from camera
@@ -96,9 +67,7 @@ public:
 				topMatch.corner[1].y,
 				topMatch.corner[3].x,
 				topMatch.corner[3].y);*/
-		
-		robot.lcd->UpdateLCD();
 	}
 };
 
-START_ROBOT_CLASS(PhoenixRobot);
+START_ROBOT_CLASS(Competition);

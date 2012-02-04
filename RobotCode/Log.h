@@ -15,8 +15,9 @@ class Log {
 	void printVec(std::vector<std::string> &vec, int &freeLines);
 public:
 	Log(Robot *robot);
-	void info(std::string text, ...);
-	void error(std::string text, ...);
+	void info(const char *text, ...);
+	void error(const char *text, ...);
+	
 	void print();
 };
 

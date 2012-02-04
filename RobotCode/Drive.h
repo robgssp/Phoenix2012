@@ -33,7 +33,7 @@ public:
 	double leftCurrent();
 	double rightCurrent();
 	void setReversed(bool reversed);
-	void addMotor(Side, CANJaguar *, double defaultScale);
+	void addMotor(Side, int port, double defaultScale);
 	void updateLight();
 };
 
