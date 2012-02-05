@@ -1,5 +1,6 @@
 #include "Autonomous.h"
 #include "Drive.h"
+#include "Log.h"
 
 ScoreAutonomous::ScoreAutonomous(Robot *robot) {
 	state = DriveToBasket;
@@ -88,18 +89,44 @@ void BridgeAutonomous::loop() {
 	}
 }
 
+GyroAutonomousTest::GyroAutonomousTest(Robot *robot) {
+	robot_ = robot;
+}
+
 void GyroAutonomousTest::loop() {
 	angle = robot_->gyro->GetAngle();
+	robot_->log->info("Gyro: %f", angle);
+	moveBy = .00000125*powf(angle,4); //Can be troubleshooted
 	if (angle > 6) { //6 is troubleshootable
-		robot_->drive->setLeft(1/(angle/10)); //can be troubleshooted
-		robot_->drive->setRight(1/(angle/10));
+		if (moveBy <= .4 && moveBy >= .2) { 
+			robot_->drive->setLeft(moveBy); 
+			robot_->drive->setRight(moveBy);
+		}
+		else if (moveBy < .2) {
+			robot_->drive->setLeft(.2); 
+			robot_->drive->setRight(.2);	
+		}
+		else {
+			robot_->drive->setLeft(.4); 
+			robot_->drive->setRight(.4);	
+		}
 	}
 	else if (angle < -6) {
-		robot_->drive->setLeft(1/(angle/10)); 
-		robot_->drive->setRight(1/(angle/10));
+		if (moveBy <= .4 && moveBy >= .2) { 
+			robot_->drive->setLeft(moveBy); 
+			robot_->drive->setRight(moveBy);
+		}
+		else if (moveBy < .2) {
+			robot_->drive->setLeft(-.2); 
+			robot_->drive->setRight(-.2);	
+		}
+		else {
+			robot_->drive->setLeft(-.4); 
+			robot_->drive->setRight(-.4);	
+		}
 	}
 	else {
 		robot_->drive->setLeft(0); 
-		robot_->drive->setRight(0);
+		robot_->drive->setRight(0);	
 	}
 }

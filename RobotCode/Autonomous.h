@@ -2,6 +2,7 @@
 #define AUTONOMOUS_H
 #include "WPILib.h"
 #include "Robot.h"
+#include "Math.h"
 
 /**
  * Autonomous no-op & base class
@@ -44,6 +45,7 @@ public:
 class GyroAutonomousTest : public Autonomous {
 	Robot *robot_;
 	float angle;
+	float moveBy;
 public:
 	GyroAutonomousTest(Robot *robot);
 	
