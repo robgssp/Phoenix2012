@@ -27,13 +27,12 @@ Robot::Robot(Type type) {
 	log = new Log(this);
 	
 	switch(type) {
-	case BotProto:
-		ultrasonic = new AnalogChannel(5);
+	case BotProto:	
+		ultrasonic = new AnalogChannel(5); 
 		
 		gyroChannel = new AnalogChannel(1);
 		
 		gyro = new Gyro(gyroChannel);
-		gyro->Reset();
 		
 		compressor = new Compressor(1, 5);
 		compressor->Start();

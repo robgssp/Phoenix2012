@@ -20,6 +20,21 @@ void ScoreAutonomous::loop() {
 		else {
 			robot_->drive->setLeft(0);
 			robot_->drive->setRight(0);	
+			/* Some sample stuff for raising the arm.
+			if (!maxLimitSensor->Get()) {
+	 	 		robot_->armMotor->Set(.2);
+	 	 	}
+			else {
+			timePassed = timePassed + 1;
+				if (timePassed < 800) { //Random number for now
+					robot_->deployMotor->Set(.25);
+				}
+				else {
+					robot_->deployMotor->Set(.25);
+					robot_->armMotor->Set(.2);
+				}
+					
+			*/
 		}
 		robot_->log->info("End.");
 		return;
@@ -31,6 +46,7 @@ void ScoreAutonomous::loop() {
 		for(int i = 0; i < 3; ++i) averageDist += distances[i];
 		averageDist /= 3;
 		if (averageDist <= 60) { state = End; return; }
+		/*
 		int Anglea;
 			if (Anglea >= 2) {
 				robot_->drive->setLeft(.6);
@@ -44,6 +60,9 @@ void ScoreAutonomous::loop() {
 				robot_->drive->setLeft(.5);
 				robot_->drive->setRight(.5);	
 			}
+		*/
+		robot_->drive->setLeft(.5);
+		robot_->drive->setRight(.5);
 		robot_->log->info("Moving...");
 		robot_->log->info("Dist: %d", averageDist);
 	}
@@ -80,5 +99,47 @@ void BridgeAutonomous::loop() {
 	    else{
 	    	//armMotor->Set(-.5);
 	    }
+	}
+}
+
+GyroAutonomousTest::GyroAutonomousTest(Robot *robot) {
+	robot_ = robot;
+}
+
+void GyroAutonomousTest::loop() {
+	angle = robot_->gyro->GetAngle();
+	robot_->log->info("Gyro: %f", angle);
+	moveBy = .00000125*powf(angle,4); //Can be troubleshooted
+	if (angle > 6) { //6 is troubleshootable
+		if (moveBy <= .4 && moveBy >= .2) { 
+			robot_->drive->setLeft(moveBy); 
+			robot_->drive->setRight(moveBy);
+		}
+		else if (moveBy < .2) {
+			robot_->drive->setLeft(.2); 
+			robot_->drive->setRight(.2);	
+		}
+		else {
+			robot_->drive->setLeft(.4); 
+			robot_->drive->setRight(.4);	
+		}
+	}
+	else if (angle < -6) {
+		if (moveBy <= .4 && moveBy >= .2) { 
+			robot_->drive->setLeft(moveBy); 
+			robot_->drive->setRight(moveBy);
+		}
+		else if (moveBy < .2) {
+			robot_->drive->setLeft(-.2); 
+			robot_->drive->setRight(-.2);	
+		}
+		else {
+			robot_->drive->setLeft(-.4); 
+			robot_->drive->setRight(-.4);	
+		}
+	}
+	else {
+		robot_->drive->setLeft(0); 
+		robot_->drive->setRight(0);	
 	}
 }

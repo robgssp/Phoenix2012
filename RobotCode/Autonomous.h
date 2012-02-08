@@ -2,6 +2,7 @@
 #define AUTONOMOUS_H
 #include "WPILib.h"
 #include "Robot.h"
+#include "Math.h"
 
 /**
  * Autonomous no-op & base class
@@ -20,6 +21,7 @@ class ScoreAutonomous : public Autonomous {
 	// storing the past 3 ultrasonic values for averaging
 	int distances[3];
 	float lastMotorSpeed;
+	int timePassed;
 	States state;
 	Robot *robot_;
 public:
@@ -37,6 +39,16 @@ class BridgeAutonomous : public Autonomous {
 	int count;
 public:
 	BridgeAutonomous(Robot *robot);
+	
+	void loop();
+};
+
+class GyroAutonomousTest : public Autonomous {
+	Robot *robot_;
+	float angle;
+	float moveBy;
+public:
+	GyroAutonomousTest(Robot *robot);
 	
 	void loop();
 };

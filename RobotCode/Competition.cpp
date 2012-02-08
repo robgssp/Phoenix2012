@@ -11,11 +11,12 @@ class Competition : public IterativeRobot {
 	Robot robot;
 
 public:
-	Competition() : robot(Robot::BotFinal) {
+	Competition() : robot(Robot::BotProto) {
 
 	}
 	
 	void AutonomousInit() {
+		/*
 		int value = robot.bcd->value();
 		if (value == 1)
 			robot.autonomous = new ScoreAutonomous(&robot);
@@ -23,10 +24,13 @@ public:
 			robot.autonomous = new ScoreAutonomous(&robot);
 		else 
 			robot.autonomous = new Autonomous();
+		*/
+		robot.autonomous = new GyroAutonomousTest(&robot);
 	}
 	
-	void AutonomousPeriodic() {
+	void AutonomousPeriodic() { 
 		robot.autonomous->loop();
+		robot.log->print();
 	}
 
 	void AutonomousDisabled() {
@@ -43,6 +47,7 @@ public:
 		robot.drive->setRight(robot.control->right());
 		robot.drive->setScale(robot.control->throttle());
 		robot.drive->setReversed(robot.control->isReversed());
+		
 		robot.log->info("Left Current: %f", robot.drive->leftCurrent());
 		robot.log->info("Right Current: %f", robot.drive->rightCurrent());
 		robot.log->info("Infra: %d", analog3->GetValue());
