@@ -17,6 +17,7 @@ public:
 	double right();
 	double throttle();
 	bool isReversed();
+	bool button(int num);
 };
 
 #endif

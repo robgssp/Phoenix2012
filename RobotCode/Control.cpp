@@ -39,3 +39,7 @@ bool Control::isReversed() {
 	wasReversedPressed_ = isReversedPressed;
 	return isReversed_;
 }
+
+bool Control::button(int num) {
+	return right_->GetRawButton(num);
+}

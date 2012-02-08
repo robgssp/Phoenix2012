@@ -35,13 +35,16 @@ Robot::Robot(Type type) {
 		gyro = new Gyro(gyroChannel);
 		gyro->Reset();
 		
+		compressor = new Compressor(1, 5);
+		compressor->Start();
+		
 		//robot.touchSensor = new DigitalInput(4);
 		//robot.bcd = new BcdSwitch(1, 2);
 		//imageTracker = new ImageTracker(this);
 		break;
 	case BotFinal:
-		//compressor = new Compressor(1, 4);
-		//compressor->Start();
+		compressor = new Compressor(1, 4);
+		compressor->Start();
 		
 		//ultrasonic = new AnalogChannel(2);
 		//gyroChannel = new AnalogChannel(1);

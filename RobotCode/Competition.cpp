@@ -28,14 +28,14 @@ public:
 	void AutonomousPeriodic() {
 		robot.autonomous->loop();
 	}
-	
+
 	void AutonomousDisabled() {
 		delete robot.autonomous;
 	}
 	
+	AnalogChannel *analog3;
 	void TeleopInit() {
-		//robot.imageTracker->updateImage();
-		//robot.imageTracker->writeFiles();
+		analog3 = new AnalogChannel(3);
 	}
 
 	void TeleopPeriodic() {
@@ -44,10 +44,9 @@ public:
 		robot.drive->setScale(robot.control->throttle());
 		robot.drive->setReversed(robot.control->isReversed());
 		robot.log->info("Left Current: %f", robot.drive->leftCurrent());
-				
 		robot.log->info("Right Current: %f", robot.drive->rightCurrent());
+		robot.log->info("Infra: %d", analog3->GetValue());
 		
-		//robot.log->info("Gyro: %f", robot.gyro->GetAngle());
 		robot.log->print();
 		
 		/*
