@@ -24,8 +24,6 @@ Robot::Robot(Type type) {
 	control->setLeftScale(-1);
 	control->setRightScale(-1);
 	
-	lcd = DriverStationLCD::GetInstance();
-	
 	log = new Log(this);
 	
 	switch(type) {
@@ -41,8 +39,8 @@ Robot::Robot(Type type) {
 		//imageTracker = new ImageTracker(this);
 		break;
 	case BotFinal:
-		compressor = new Compressor(1, 4);
-		compressor->Start();
+		//compressor = new Compressor(1, 4);
+		//compressor->Start();
 		
 		//ultrasonic = new AnalogChannel(2);
 		//gyroChannel = new AnalogChannel(1);
@@ -51,7 +49,6 @@ Robot::Robot(Type type) {
 		//robot.bcd = new BcdSwitch(1, 2);
 		break;
 	}
-	gyro->Reset();
 }
 
 Robot::~Robot() {

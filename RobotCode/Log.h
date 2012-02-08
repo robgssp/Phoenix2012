@@ -12,6 +12,7 @@ class Log {
 	Robot *robot_;
 	std::vector<std::string> info_;
 	std::vector<std::string> error_;
+	DriverStationLCD *lcd_;
 	void printVec(std::vector<std::string> &vec, int &freeLines);
 public:
 	Log(Robot *robot);

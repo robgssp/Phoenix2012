@@ -20,9 +20,23 @@ void ScoreAutonomous::loop() {
 		else {
 			robot_->drive->setLeft(0);
 			robot_->drive->setRight(0);	
+			/* Some sample stuff for raising the arm.
+			if (!maxLimitSensor->Get()) {
+	 	 		robot_->armMotor->Set(.2);
+	 	 	}
+			else {
+			timePassed = timePassed + 1;
+				if (timePassed < 800) { //Random number for now
+					robot_->deployMotor->Set(.25);
+				}
+				else {
+					robot_->deployMotor->Set(.25);
+					robot_->armMotor->Set(.2);
+				}
+					
+			*/
 		}
-		robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line1, "End.");
-		robot_->lcd->UpdateLCD();
+		robot_->log->info("End.");
 		return;
 	} else if (state == DriveToBasket) {
 		distances[2] = distances[1];
@@ -49,9 +63,8 @@ void ScoreAutonomous::loop() {
 		*/
 		robot_->drive->setLeft(.5);
 		robot_->drive->setRight(.5);
-		robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line1, "Moving...");
-		robot_->lcd->PrintfLine(DriverStationLCD::kUser_Line2, "Dist: %d", averageDist);
-		robot_->lcd->UpdateLCD();
+		robot_->log->info("Moving...");
+		robot_->log->info("Dist: %d", averageDist);
 	}
 }
 

@@ -21,6 +21,7 @@ class ScoreAutonomous : public Autonomous {
 	// storing the past 3 ultrasonic values for averaging
 	int distances[3];
 	float lastMotorSpeed;
+	int timePassed;
 	States state;
 	Robot *robot_;
 public:

@@ -18,7 +18,6 @@ public:
 	enum Type { BotProto, BotFinal };
 	Robot(Type type);
 	virtual ~Robot();
-	DriverStationLCD *lcd;
 	Drive *drive;
 	Control *control;
 	Relay *driveLight;
