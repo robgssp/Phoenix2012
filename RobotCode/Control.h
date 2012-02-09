@@ -17,6 +17,7 @@ public:
 	double right();
 	double throttle();
 	bool isReversed();
+	bool isBalancing(); // Activation for balancing (Hold button 5)
 	bool button(int num);
 };
 

@@ -9,6 +9,7 @@ class Autonomous;
 class BcdSwitch;
 class ImageTracker;
 class Log;
+class Balance;
 
 /** 
  * Container class for robot components
@@ -31,6 +32,7 @@ public:
 	ImageTracker *imageTracker;
 	Log *log;
 	Compressor *compressor;
+	Balance *balance;
 private:
 	Type type_;
 };

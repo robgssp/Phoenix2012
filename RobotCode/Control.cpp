@@ -40,6 +40,16 @@ bool Control::isReversed() {
 	return isReversed_;
 }
 
+bool Control::isBalancing() {
+	bool pressed = left_->GetRawButton(5);
+	if (pressed) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
 bool Control::button(int num) {
 	return right_->GetRawButton(num);
 }

@@ -2,7 +2,6 @@
 #define AUTONOMOUS_H
 #include "WPILib.h"
 #include "Robot.h"
-#include "Math.h"
 
 /**
  * Autonomous no-op & base class
@@ -39,16 +38,6 @@ class BridgeAutonomous : public Autonomous {
 	int count;
 public:
 	BridgeAutonomous(Robot *robot);
-	
-	void loop();
-};
-
-class GyroAutonomousTest : public Autonomous {
-	Robot *robot_;
-	float angle;
-	float moveBy;
-public:
-	GyroAutonomousTest(Robot *robot);
 	
 	void loop();
 };
