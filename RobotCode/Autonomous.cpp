@@ -85,13 +85,10 @@ void BridgeAutonomous::loop() {
         robot_->drive->setRight(0);
 	    count = count + 1;
 	    if (count > 799){ //Just a random number for now
-	        //armMotor->Set(0); This is the imaginary motor that controls the arm. It remains imaginary for the present time.
+	    	robot_->rampDevice->Set(0);
 	    }
-	    else if (count > 399){ 
-	        //armMotor->Set(.5);
-	    }
-	    else{
-	    	//armMotor->Set(-.5);
+	    else { 
+	    	robot_->rampDevice->Set(1);
 	    }
 	}
 }

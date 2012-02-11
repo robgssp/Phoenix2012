@@ -3,7 +3,7 @@
 #include "WPILib.h"
 #include "Robot.h"
 #include "Arm.h"
-
+#include "Control.h"
 
 /**
  * Autonomous no-op & base class

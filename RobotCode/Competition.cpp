@@ -51,13 +51,11 @@ public:
 		robot.drive->setReversed(robot.control->isReversed());
 		/* 
 		if (robot.control->bridgeDeviceOnOff())) {
-			bridgeDevice->Value{kOn};
+			rampDevice->Value{1};
 		}
-		else { bridgeDevice->Relay::Value = {kOff} }
 		if (robot.control->bridgeDeviceUpDown())) {
-			bridgeDevice->Value{kForward};
+			rampDevice->Set{0};
 		}
-		else { bridgeDevice->Value{"kReverse"} }
 		*/
 		robot.log->info("Left Current: %f", robot.drive->leftCurrent());
 		robot.log->info("Right Current: %f", robot.drive->rightCurrent());
