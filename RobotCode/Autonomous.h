@@ -2,6 +2,8 @@
 #define AUTONOMOUS_H
 #include "WPILib.h"
 #include "Robot.h"
+#include "Arm.h"
+
 
 /**
  * Autonomous no-op & base class

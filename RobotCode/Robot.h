@@ -10,6 +10,7 @@ class BcdSwitch;
 class ImageTracker;
 class Log;
 class Balance;
+class Arm;
 
 /** 
  * Container class for robot components
@@ -34,6 +35,7 @@ public:
 	Compressor *compressor;
 	Balance *balance;
 	Solenoid *rampDevice;
+	Arm *arm;
 private:
 	Type type_;
 };
