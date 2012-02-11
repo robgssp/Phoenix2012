@@ -32,7 +32,7 @@ double Control::throttle() {
 }
 
 bool Control::isReversed() {
-	bool isReversedPressed = left_->GetRawButton(3);
+	bool isReversedPressed = button(3);
 	if(isReversedPressed && !wasReversedPressed_) {
 		isReversed_ = !isReversed_;
 	} 
@@ -41,15 +41,18 @@ bool Control::isReversed() {
 }
 
 bool Control::isBalancing() {
-	bool pressed = left_->GetRawButton(5);
-	if (pressed) {
-		return 1;
-	}
-	else {
-		return 0;
-	}
+	return button(2);
 }
 
 bool Control::button(int num) {
 	return right_->GetRawButton(num);
+}
+
+bool Control::bridgeDeviceUpDown() {
+	bool isBridgeDeviceUpDownPressed = button(5);
+	if (isBridgeDeviceUpDownPressed && !wasBridgeDeviceUpDownPressed_) {
+		isBridgeDeviceUpDown_ = !isBridgeDeviceUpDown_;
+	}
+	wasBridgeDeviceUpDownPressed_ = isBridgeDeviceUpDownPressed;
+	return isBridgeDeviceOnOff_;
 }

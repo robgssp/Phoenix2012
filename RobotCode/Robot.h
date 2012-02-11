@@ -33,6 +33,7 @@ public:
 	Log *log;
 	Compressor *compressor;
 	Balance *balance;
+	Solenoid *rampDevice;
 private:
 	Type type_;
 };

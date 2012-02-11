@@ -52,6 +52,7 @@ Robot::Robot(Type type) {
 		//gyro = new Gyro(gyroChannel);
 		//robot.touchSensor = new DigitalInput(4);
 		//robot.bcd = new BcdSwitch(1, 2);
+		//robot.rampDevice = new Solenoid(PORT);
 		break;
 	}
 }

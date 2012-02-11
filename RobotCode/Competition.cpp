@@ -49,6 +49,16 @@ public:
 		robot.drive->setRight(robot.control->right());
 		robot.drive->setScale(robot.control->throttle());
 		robot.drive->setReversed(robot.control->isReversed());
+		/* 
+		if (robot.control->bridgeDeviceOnOff())) {
+			bridgeDevice->Value{kOn};
+		}
+		else { bridgeDevice->Relay::Value = {kOff} }
+		if (robot.control->bridgeDeviceUpDown())) {
+			bridgeDevice->Value{kForward};
+		}
+		else { bridgeDevice->Value{"kReverse"} }
+		*/
 		robot.log->info("Left Current: %f", robot.drive->leftCurrent());
 		robot.log->info("Right Current: %f", robot.drive->rightCurrent());
 		robot.log->info("Infra: %d", analog3->GetValue());
