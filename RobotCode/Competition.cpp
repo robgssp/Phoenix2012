@@ -7,6 +7,7 @@
 #include "ImageTracker.h"
 #include "Log.h"
 #include <algorithm>
+#include "Balance.h"
 
 class Competition : public IterativeRobot {
 	Robot robot;
@@ -17,16 +18,13 @@ public:
 	}
 	
 	void AutonomousInit() {
-		/*
 		int value = robot.bcd->value();
 		if (value == 1)
 			robot.autonomous = new ScoreAutonomous(&robot);
-		if (value == 2)
+		else if (value == 2)
 			robot.autonomous = new ScoreAutonomous(&robot);
 		else 
 			robot.autonomous = new Autonomous();
-		*/
-		robot.autonomous = new GyroAutonomousTest(&robot);
 	}
 	
 	void AutonomousPeriodic() { 
@@ -46,6 +44,10 @@ public:
 	double prevCurrent_;
 
 	void TeleopPeriodic() {
+		if (robot.control->isBalancing()) {
+			robot.balance->loop();
+			return;
+		}
 		robot.drive->setLeft(robot.control->left());
 		robot.drive->setRight(robot.control->right());
 		robot.drive->setScale(robot.control->throttle());

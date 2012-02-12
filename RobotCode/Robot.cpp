@@ -3,6 +3,7 @@
 #include "Drive.h"
 #include "ImageTracker.h"
 #include "Log.h"
+#include "Balance.h"
 
 Robot::Robot(Type type) {
 	this->type = type;	
@@ -35,6 +36,7 @@ Robot::Robot(Type type) {
 		gyroChannel = new AnalogChannel(1);
 		
 		gyro = new Gyro(gyroChannel);
+		balance = new Balance(this);
 		
 		compressor = new Compressor(1, 5);
 		compressor->Start();
@@ -52,6 +54,7 @@ Robot::Robot(Type type) {
 		//gyro = new Gyro(gyroChannel);
 		//robot.touchSensor = new DigitalInput(4);
 		//robot.bcd = new BcdSwitch(1, 2);
+		//robot.rampDevice = new Solenoid(1);
 		break;
 	}
 }

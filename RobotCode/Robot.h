@@ -9,6 +9,8 @@ class Autonomous;
 class BcdSwitch;
 class ImageTracker;
 class Log;
+class Balance;
+class Arm;
 
 /** 
  * Container class for robot components
@@ -32,6 +34,9 @@ public:
 	Log *log;
 	Compressor *compressor;
 	Type type;
+	Balance *balance;
+	Solenoid *rampDevice;
+	Arm *arm;
 };
 
 #endif

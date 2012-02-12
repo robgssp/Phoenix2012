@@ -41,6 +41,19 @@ bool Control::isReversed() {
 	return isReversed_;
 }
 
+bool Control::isBalancing() {
+	return button(2);
+}
+
 bool Control::button(int num) {
 	return control_->GetRawButton(num);
+}
+
+bool Control::bridgeDeviceUpDown() {
+	bool isBridgeDeviceUpDownPressed = button(5);
+	if (isBridgeDeviceUpDownPressed && !wasBridgeDeviceUpDownPressed_) {
+		isBridgeDeviceUpDown_ = !isBridgeDeviceUpDown_;
+	}
+	wasBridgeDeviceUpDownPressed_ = isBridgeDeviceUpDownPressed;
+	return isBridgeDeviceOnOff_;
 }
