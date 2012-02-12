@@ -6,12 +6,13 @@
 #include "BcdSwitch.h"
 #include "ImageTracker.h"
 #include "Log.h"
+#include <algorithm>
 
 class Competition : public IterativeRobot {
 	Robot robot;
 
 public:
-	Competition() : robot(Robot::BotProto) {
+	Competition() : robot(Robot::BotFinal) {
 
 	}
 	
@@ -37,20 +38,26 @@ public:
 		delete robot.autonomous;
 	}
 	
-	AnalogChannel *analog3;
 	void TeleopInit() {
-		analog3 = new AnalogChannel(3);
+		prevCurrent_ = 0;
+		robot.drive->setShiftMode(Drive::Manual);
 	}
+
+	double prevCurrent_;
 
 	void TeleopPeriodic() {
 		robot.drive->setLeft(robot.control->left());
 		robot.drive->setRight(robot.control->right());
 		robot.drive->setScale(robot.control->throttle());
 		robot.drive->setReversed(robot.control->isReversed());
+		robot.drive->setLowShift(robot.control->button(8));
 		
-		robot.log->info("Left Current: %f", robot.drive->leftCurrent());
-		robot.log->info("Right Current: %f", robot.drive->rightCurrent());
-		robot.log->info("Infra: %d", analog3->GetValue());
+		robot.log->info("Left Current: %.1f", robot.drive->leftCurrent());
+		robot.log->info("Right Current: %.1f", robot.drive->rightCurrent());
+		robot.log->info("Compressor: %s", 
+				robot.compressor->GetPressureSwitchValue() ? "true" : "false");
+		robot.log->info("Max current: %.1f", prevCurrent_ = 
+				max(prevCurrent_, robot.drive->current()));
 		
 		robot.log->print();
 		

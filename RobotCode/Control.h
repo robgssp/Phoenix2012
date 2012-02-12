@@ -4,7 +4,12 @@
 
 class Control {
 	Joystick *left_, *right_;
+
+	// joystick to get button presses
+	Joystick *control_;
 	double leftScale_, rightScale_;
+
+	// for setReversed()
 	bool wasReversedPressed_;
 	bool isReversed_;
 public:

@@ -3,6 +3,7 @@
 Control::Control(Joystick *left, Joystick *right, Mode mode) {
 	this->left_ = left;
 	this->right_ = right;
+	control_ = right_;
 	wasReversedPressed_ = isReversed_ = false;
 }
 
@@ -28,11 +29,11 @@ double Control::right() {
 }
 
 double Control::throttle() {
-	return (1 - left_->GetRawAxis(3)) / 2;
+	return (1 - control_->GetRawAxis(3)) / 2;
 }
 
 bool Control::isReversed() {
-	bool isReversedPressed = left_->GetRawButton(3);
+	bool isReversedPressed = button(3);
 	if(isReversedPressed && !wasReversedPressed_) {
 		isReversed_ = !isReversed_;
 	} 
@@ -41,5 +42,5 @@ bool Control::isReversed() {
 }
 
 bool Control::button(int num) {
-	return right_->GetRawButton(num);
+	return control_->GetRawButton(num);
 }

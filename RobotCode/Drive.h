@@ -22,19 +22,42 @@ class Drive {
 	double scale_;
 	bool reversed_;
 	Robot *robot_;
+	Solenoid *shifter_;
+	bool shifterLast_;
+	
+	// update state
+	void updateLight();
 	
 public:
 	enum Side { Left, Right };
+	Drive(int shifterPort, Robot *config);
 	Drive(Robot *config);
 	virtual ~Drive();
+	
+	// power ctl
 	void setLeft(double value);
 	void setRight(double value);
+	
+	// scaling
 	void setScale(double value);
+	void setReversed(bool reversed);
+	
+	// current
 	double leftCurrent();
 	double rightCurrent();
-	void setReversed(bool reversed);
+	double current();
+	
+	// shift
+	enum ShiftMode { Manual = 1, Automatic };
+	void setShiftMode(ShiftMode mode);
+	void setLowShift(bool set);
+	void updateShifter();
+	
+	// configuration
 	void addMotor(Side, int port, double defaultScale);
-	void updateLight();
+	
+private:
+	ShiftMode mode_;
 };
 
 #endif

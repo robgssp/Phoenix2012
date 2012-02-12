@@ -1,9 +1,19 @@
 #include "Drive.h"
+#include "Log.h"
 #include <algorithm>
 
-Drive::Drive(Robot *robot) { 
+Drive::Drive(int shifterPort, Robot *robot) { 
 	this->robot_ = robot;
-	scale_ = 1;
+	this->scale_ = 1;
+	this->reversed_ = false;
+	shifter_ = new Solenoid(shifterPort);
+}
+
+Drive::Drive(Robot *robot) {
+	this->robot_ = robot;
+	this->scale_ = 1;
+	this->reversed_ = false;
+	shifter_ = NULL;
 }
 
 Drive::~Drive() {
@@ -44,6 +54,20 @@ double Drive::rightCurrent() {
 	return motorCurrent(reversed_ ? rightMotors_ : leftMotors_);
 }
 
+double Drive::current() {
+	return max(leftCurrent(), rightCurrent());
+}
+
+// max current to run at
+static const double maxcurrent = 100.0;
+
+/**
+ * if current gets too high, downshift
+ */
+void Drive::updateShifter() {
+	setLowShift(current() > maxcurrent);
+}
+
 double Drive::motorCurrent(const MotorVector &motors) {
 	double total = 0;
 	MotorVector::const_iterator iter;
@@ -52,6 +76,18 @@ double Drive::motorCurrent(const MotorVector &motors) {
 		total += m.motor->GetOutputCurrent();
 	}
 	return total / motors.size();
+}
+
+void Drive::setShiftMode(ShiftMode mode) { this->mode_ = mode; }
+
+static int numSets = 0;
+
+void Drive::setLowShift(bool set) {
+	robot_->log->info("shift %s, %d", set ? "low" : "high", numSets);
+	if(set != shifterLast_) { 
+		++numSets;
+		shifter_->Set(set); shifterLast_ = set; 
+	}
 }
 
 /**

@@ -5,13 +5,15 @@
 #include "Log.h"
 
 Robot::Robot(Type type) {
-	this->type_ = type;	
+	this->type = type;	
+	
+	drive = type == BotFinal ? new Drive(2, this) :
+		new Drive(this);
 
-	drive = new Drive(this);
-	drive->addMotor(Drive::Left, 2, -1);
-	drive->addMotor(Drive::Left, 3, -1);
-	drive->addMotor(Drive::Right, 4, 1);
-	drive->addMotor(Drive::Right, 5, 1);
+	drive->addMotor(Drive::Left, 2, 1);
+	drive->addMotor(Drive::Left, 3, 1);
+	drive->addMotor(Drive::Right, 4, -1);
+	drive->addMotor(Drive::Right, 5, -1);
 	
 	//camera = &AxisCamera::GetInstance();
 	//camera->WriteMaxFPS(AxisCameraParams::kResolution_320x240);
@@ -42,7 +44,7 @@ Robot::Robot(Type type) {
 		//imageTracker = new ImageTracker(this);
 		break;
 	case BotFinal:
-		compressor = new Compressor(1, 4);
+		compressor = new Compressor(9, 4);
 		compressor->Start();
 		
 		//ultrasonic = new AnalogChannel(2);

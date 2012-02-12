@@ -31,8 +31,7 @@ public:
 	ImageTracker *imageTracker;
 	Log *log;
 	Compressor *compressor;
-private:
-	Type type_;
+	Type type;
 };
 
 #endif
