@@ -6,7 +6,6 @@ ImageTracker::ImageTracker(Robot *robot) {
 	image_ = imaqCreateImage(IMAQ_IMAGE_HSL, DEFAULT_BORDER_SIZE);
 	processedImage_ = imaqCreateImage(IMAQ_IMAGE_U8, DEFAULT_BORDER_SIZE);
 	processedImage_ = NULL;
-	loopCount_ = 0;
 }
 
 static Range selectAll = {0, 255};
@@ -37,23 +36,29 @@ static RectangleDescriptor rectangleDescriptor = {
  * Use horizOffset() for tracking purposes.
  */
 void ImageTracker::updateImage() {
+	// new image
+	imaqDispose(image_);
 	robot_->camera->GetImage(image_);
 	
+	// new processed image
 	imaqDispose(processedImage_);
-	imaqCreateImage(IMAQ_IMAGE_U8, DEFAULT_BORDER_SIZE);
+	processedImage_ = imaqCreateImage(IMAQ_IMAGE_U8, DEFAULT_BORDER_SIZE);
+
+	// luminance plane of image_
 	imaqExtractColorPlanes(image_, IMAQ_HSL, NULL, NULL, processedImage_);
 	
+	// filters image 
 	imaqThreshold(processedImage_, processedImage_, 230, 255, TRUE, 1.0);
 	
 	int numParticles = 0;
 	imaqParticleFilter4(processedImage_, processedImage_, particleCiteria, 2, &particleOpts, NULL, &numParticles);
+	robot_->log->info("%d partis filt'd", numParticles);
 	
 	int matchCount = 0;
 	RectangleMatch *temp = imaqDetectRectangles(
 			processedImage_, &rectangleDescriptor, NULL, NULL, NULL, &matchCount);
 	
 	robot_->log->info("%d matches", matchCount);
-	robot_->log->info("looped %d times", ++loopCount_);
 	
 	matches_.clear();
 	for(int i = 0; i < matchCount; ++i) matches_.push_back(temp[i]);

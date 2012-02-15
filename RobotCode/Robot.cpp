@@ -4,6 +4,7 @@
 #include "ImageTracker.h"
 #include "Log.h"
 #include "Balance.h"
+#include "BcdSwitch.h"
 
 Robot::Robot(Type type) {
 	this->type = type;	
@@ -48,6 +49,7 @@ Robot::Robot(Type type) {
 	case BotFinal:
 		compressor = new Compressor(9, 4);
 		compressor->Start();
+		bcd = new BcdSwitch(12, 13, 14);
 		
 		//ultrasonic = new AnalogChannel(2);
 		//gyroChannel = new AnalogChannel(1);

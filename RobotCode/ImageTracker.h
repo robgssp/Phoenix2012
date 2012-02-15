@@ -9,7 +9,6 @@ class ImageTracker {
 	Image *image_;
 	Image *processedImage_;
 	std::vector<RectangleMatch> matches_;
-	int loopCount_;
 public:
 	ImageTracker(Robot *robot);
 	void updateImage();

@@ -12,6 +12,8 @@ Arm::Arm(int motorPort, int bottomLimitPort, int topLimitPort,
 	this->bottomLimit_ = new DigitalInput(bottomLimitPort);
 	this->topLimit_ = new DigitalInput(topLimitPort);
 	this->encoder_ = new Encoder(encoderPorts.a, encoderPorts.b);
+
+	// TODO tune
 	this->armControllerUp_ = new PIDController(1.0, 0.0, 0.0, encoder_, armMotor_);
 	this->armControllerDown_ = new PIDController(0.5, 0.0, 0.0, encoder_, armMotor_);
 }
@@ -43,13 +45,20 @@ void Arm::setAngle(double angle) {
 	if(!controller.IsEnabled()) controller.Enable();
 }
 
+bool Arm::lowHit() {
+	return (encoder_->Get() < downPos) || bottomLimit_->Get();
+}
+
+bool Arm::highHit() {
+	return (encoder_->Get() > upPos) || topLimit_->Get();
+}
+
 /**
  * apply power manually, for joystick control
  */
 void Arm::setPower(double power) {
-	double current = encoder_->Get();
-	if((current > upPos && power > 0) || 
-	   (current < downPos && power < 0)) {
+	if((highHit() && power > 0) || 
+	   (lowHit() && power < 0)) {
 		return;
 	}
 	

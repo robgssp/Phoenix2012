@@ -27,6 +27,9 @@ public:
 	void intake();
 	void deploy();
 	bool deployOne();
+
+	bool lowHit();
+	bool highHit();
 private:
 	Position pos_;
 };

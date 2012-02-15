@@ -84,9 +84,10 @@ static int numSets = 0;
 
 void Drive::setLowShift(bool set) {
 	robot_->log->info("shift %s, %d", set ? "low" : "high", numSets);
+	shifter_->Set(set); 
 	if(set != shifterLast_) { 
 		++numSets;
-		shifter_->Set(set); shifterLast_ = set; 
+		shifterLast_ = set; 
 	}
 }
 
