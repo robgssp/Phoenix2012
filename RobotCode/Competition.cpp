@@ -61,7 +61,6 @@ public:
 		robot.log->info("Max current: %.1f", prevCurrent_ = 
 				max(prevCurrent_, robot.drive->current()));
 		robot.log->info("BCD: %d", robot.bcd->value());
-		
 		robot.log->print();
 		
 		/*

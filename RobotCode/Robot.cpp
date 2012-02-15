@@ -51,7 +51,7 @@ Robot::Robot(Type type) {
 		compressor->Start();
 		bcd = new BcdSwitch(12, 13, 14);
 		
-		//ultrasonic = new AnalogChannel(2);
+		ultrasonic = new AnalogChannel(2);
 		//gyroChannel = new AnalogChannel(1);
 		//gyro = new Gyro(gyroChannel);
 		//robot.touchSensor = new DigitalInput(4);

@@ -8,6 +8,8 @@ ScoreAutonomous::ScoreAutonomous(Robot *robot) {
 	this->robot_ = robot;
 	robot_->drive->setReversed(true);
 	lastMotorSpeed = .5;
+	robot->log->info("SA Constructor");
+	robot->log->print();
 }
 
 void ScoreAutonomous::loop() {
@@ -20,6 +22,7 @@ void ScoreAutonomous::loop() {
 		else {
 			robot_->drive->setLeft(0);
 			robot_->drive->setRight(0);	
+			/*
 			robot_->arm->setPosition(Arm::Up);
 			timePassed = timePassed + 1;
 				if (timePassed < 800) { //Random number for now
@@ -28,6 +31,7 @@ void ScoreAutonomous::loop() {
 				else {
 					robot_->arm->setPosition(Arm::Down);
 				}
+			*/
 		robot_->log->info("End.");
 		return;
 		}
@@ -39,7 +43,11 @@ void ScoreAutonomous::loop() {
 		int averageDist = 0;
 		for(int i = 0; i < 3; ++i) averageDist += distances[i];
 		averageDist /= 3;
-		if (averageDist <= 60) { state = End; return; }
+		if (averageDist <= 30) 
+		{
+		robot_->log->info("Setting state to End");
+		state = End; return; 
+		}
 		/*
 		int Anglea;
 			if (Anglea >= 2) {
