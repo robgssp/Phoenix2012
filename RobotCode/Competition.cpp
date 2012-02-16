@@ -12,18 +12,18 @@ class Competition : public IterativeRobot {
 	Robot robot;
 
 public:
-	Competition() : robot(Robot::BotProto) {
+	Competition() : robot(Robot::BotFinal) {
 
 	}
 	
 	void AutonomousInit() {
-		int value = robot.bcd->value();
-		if (value == 1)
+		//int value = robot.bcd->value();
+		//if (value == 1)
+			//robot.autonomous = new ScoreAutonomous(&robot);
+		//if (value == 2)
 			robot.autonomous = new ScoreAutonomous(&robot);
-		if (value == 2)
-			robot.autonomous = new ScoreAutonomous(&robot);
-		else 
-			robot.autonomous = new Autonomous();
+		//else 
+			//robot.autonomous = new Autonomous();
 	}
 	
 	void AutonomousPeriodic() { 
@@ -59,6 +59,7 @@ public:
 		*/
 		robot.log->info("Left Current: %f", robot.drive->leftCurrent());
 		robot.log->info("Right Current: %f", robot.drive->rightCurrent());
+		robot.log->info("Dist: %f", robot.ultrasonic->GetValue());
 		robot.log->info("Infra: %d", analog3->GetValue());
 		robot.log->print();
 		

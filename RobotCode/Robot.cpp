@@ -47,7 +47,7 @@ Robot::Robot(Type type) {
 		compressor = new Compressor(1, 4);
 		compressor->Start();
 		
-		//ultrasonic = new AnalogChannel(2);
+		ultrasonic = new AnalogChannel(2);
 		//gyroChannel = new AnalogChannel(1);
 		//gyro = new Gyro(gyroChannel);
 		//robot.touchSensor = new DigitalInput(4);
