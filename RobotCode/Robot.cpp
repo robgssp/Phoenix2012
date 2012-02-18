@@ -5,6 +5,7 @@
 #include "Log.h"
 #include "Balance.h"
 #include "BcdSwitch.h"
+#include "Gatherer.h"
 
 Robot::Robot(Type type) {
 	this->type = type;	
@@ -24,7 +25,7 @@ Robot::Robot(Type type) {
 	log = new Log(this);
 	
 	control = new Control(
-			new Joystick(1), new Joystick(2), Control::Tank);
+			new Joystick(1), new Joystick(2), Control::Tank, this);
 	control->setLeftScale(-1);
 	control->setRightScale(-1);
 	
@@ -49,9 +50,10 @@ Robot::Robot(Type type) {
 	case BotFinal:
 		compressor = new Compressor(9, 4);
 		compressor->Start();
-		bcd = new BcdSwitch(12, 13, 14);
+		bcd = new BcdSwitch(11, 12, 13, 14);
 		
 		ultrasonic = new AnalogChannel(2);
+		gatherer = new Gatherer(1, this);
 		//gyroChannel = new AnalogChannel(1);
 		//gyro = new Gyro(gyroChannel);
 		//robot.touchSensor = new DigitalInput(4);

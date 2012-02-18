@@ -3,10 +3,11 @@
 #include "WPILib.h"
 
 class BcdSwitch {
-	DigitalInput *port1, *port2, *port3;
+	DigitalInput *ports[4];
 public:
-	BcdSwitch(int port1, int port2, int port3);
+	BcdSwitch(int port1, int port2, int port3, int port4);
 	int value();
+	bool valOne(int which);
 };
 
 #endif

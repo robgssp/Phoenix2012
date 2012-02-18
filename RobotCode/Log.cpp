@@ -21,6 +21,7 @@ void Log::info(const char *text, ...) {
 	va_start(vl, text);
 	vsnprintf(buf, 100, text, vl);
 	info_.push_back(std::string(buf)); 
+	va_end(vl);
 }
 
 void Log::error(const char *text, ...) { 
@@ -30,6 +31,7 @@ void Log::error(const char *text, ...) {
 	va_start(vl, text);
 	vsnprintf(buf, 100, text, vl);
 	error_.push_back(std::string("e:") + std::string(buf)); 
+	va_end(vl);
 }
 
 void Log::print() {

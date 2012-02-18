@@ -11,6 +11,7 @@ class ImageTracker;
 class Log;
 class Balance;
 class Arm;
+class Gatherer;
 
 /** 
  * Container class for robot components
@@ -37,6 +38,7 @@ public:
 	Balance *balance;
 	Solenoid *rampDevice;
 	Arm *arm;
+	Gatherer *gatherer;
 };
 
 #endif

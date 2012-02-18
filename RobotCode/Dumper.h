@@ -2,7 +2,6 @@
 #define DUMPER_H
 #include "Robot.h"
 
-struct IntRange;
 struct IntakeState;
 
 class Dumper {
@@ -14,7 +13,6 @@ class Dumper {
 	bool infraWasTriggered_;
 	
 	// for deployOne()
-	IntRange *targetRange_;
 	void setDeployTarget();
 
 	// for intake()

@@ -6,8 +6,9 @@
 #include "BcdSwitch.h"
 #include "ImageTracker.h"
 #include "Log.h"
-#include <algorithm>
 #include "Balance.h"
+#include "Gatherer.h"
+#include <algorithm>
 
 class Competition : public IterativeRobot {
 	Robot robot;
@@ -20,8 +21,6 @@ public:
 	void AutonomousInit() {
 		int value = robot.bcd->value();
 		if (value == 1)
-			robot.autonomous = new ScoreAutonomous(&robot);
-		else if (value == 2)
 			robot.autonomous = new ScoreAutonomous(&robot);
 		else 
 			robot.autonomous = new Autonomous();
@@ -44,15 +43,16 @@ public:
 	double prevCurrent_;
 
 	void TeleopPeriodic() {
-		if (robot.control->isBalancing()) {
+		if (robot.control->button(5)) {
 			robot.balance->loop();
 			return;
 		}
 		robot.drive->setLeft(robot.control->left());
 		robot.drive->setRight(robot.control->right());
 		robot.drive->setScale(robot.control->throttle());
-		robot.drive->setReversed(robot.control->isReversed());
+		robot.drive->setReversed(robot.control->toggleButton(3));
 		robot.drive->setLowShift(robot.control->button(8));
+		robot.gatherer->setEnabled(robot.control->button(4));
 		
 		robot.log->info("Left Current: %.1f", robot.drive->leftCurrent());
 		robot.log->info("Right Current: %.1f", robot.drive->rightCurrent());
