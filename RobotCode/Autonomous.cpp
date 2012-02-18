@@ -5,11 +5,11 @@
 ScoreAutonomous::ScoreAutonomous(Robot *robot) {
 	state = DriveToBasket;
 	for(int i = 0; i < 3; ++i) distances[i] = 500;
+	lastMotorSpeed = .5;
+	timePassed = 0;
 	this->robot_ = robot;
 	robot_->drive->setReversed(true);
-	lastMotorSpeed = .5;
 	robot->log->info("SA Constructor");
-	robot->log->print();
 }
 
 void ScoreAutonomous::loop() {
@@ -45,7 +45,7 @@ void ScoreAutonomous::loop() {
 		averageDist /= 3;
 		if (averageDist <= 30) 
 		{
-		robot_->log->info("Setting state to End");
+		robot_->log->info("=>End %d, %d %d %d", averageDist, distances[0], distances[1], distances[2]);
 		state = End; return; 
 		}
 		/*
@@ -63,7 +63,7 @@ void ScoreAutonomous::loop() {
 				robot_->drive->setRight(.5);	
 			}
 		*/
-		robot_->drive->setLeft(.5);
+		robot_->drive->setLeft(.41);
 		robot_->drive->setRight(.5);
 		robot_->log->info("Moving...");
 		robot_->log->info("Dist: %d", averageDist);
@@ -84,8 +84,8 @@ void BridgeAutonomous::loop() {
 	        state = PushDownBridge;
 	    }
 	    else{
-	        robot_->drive->setLeft(.5); //Set motors to drive forward
-	        robot_->drive->setRight(.5);
+	        robot_->drive->setLeft(.2); //Set motors to drive forward
+	        robot_->drive->setRight(.8);
 	    }
 	}
 	else if (state == PushDownBridge){
