@@ -19,11 +19,11 @@ public:
  */
 class ScoreAutonomous : public Autonomous {
 	enum States { DriveToBasket, DumpBalls, End };
+	States state;
 	// storing the past 3 ultrasonic values for averaging
 	int distances[3];
 	float lastMotorSpeed;
 	int timePassed;
-	States state;
 	Robot *robot_;
 public:
 	ScoreAutonomous(Robot *robot);
