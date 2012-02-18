@@ -6,6 +6,7 @@
 #include "Balance.h"
 #include "BcdSwitch.h"
 #include "Gatherer.h"
+#include "Arm.h"
 
 Robot::Robot(Type type) {
 	this->type = type;	
@@ -25,10 +26,12 @@ Robot::Robot(Type type) {
 	log = new Log(this);
 	
 	control = new Control(
-			new Joystick(1), new Joystick(2), Control::Tank, this);
+			new Joystick(1), new Joystick(2), new Joystick(3), 
+			Control::Tank, this);
 	control->setLeftScale(-1);
 	control->setRightScale(-1);
-	
+	control->setGamepadScale(-1);
+
 	log = new Log(this);
 	
 	switch(type) {
@@ -54,6 +57,7 @@ Robot::Robot(Type type) {
 		
 		ultrasonic = new AnalogChannel(2);
 		gatherer = new Gatherer(1, this);
+		arm = new Arm(6, 7, 8, 5, 6, this);
 		//gyroChannel = new AnalogChannel(1);
 		//gyro = new Gyro(gyroChannel);
 		//robot.touchSensor = new DigitalInput(4);

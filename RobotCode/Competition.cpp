@@ -47,19 +47,25 @@ public:
 			robot.balance->loop();
 			return;
 		}
+
+		// drive
 		robot.drive->setLeft(robot.control->left());
 		robot.drive->setRight(robot.control->right());
 		robot.drive->setScale(robot.control->throttle());
 		robot.drive->setReversed(robot.control->toggleButton(3));
 		robot.drive->setLowShift(robot.control->button(8));
-		robot.gatherer->setEnabled(robot.control->button(4));
+
+		// ball gatherer
+		robot.gatherer->setEnabled(robot.control->gamepadButton(5) ? 
+				Relay::kForward : robot.control->gamepadButton(7) ?
+				Relay::kReverse : Relay::kOff);
+
+		// arm
+		robot.arm->setPower(robot.control->gamepadLeft());
 		
+		// assorted debug
 		robot.log->info("Left Current: %.1f", robot.drive->leftCurrent());
 		robot.log->info("Right Current: %.1f", robot.drive->rightCurrent());
-		robot.log->info("Compressor: %s", 
-				robot.compressor->GetPressureSwitchValue() ? "true" : "false");
-		robot.log->info("Max current: %.1f", prevCurrent_ = 
-				max(prevCurrent_, robot.drive->current()));
 		robot.log->info("BCD: %d", robot.bcd->value());
 		robot.log->print();
 		

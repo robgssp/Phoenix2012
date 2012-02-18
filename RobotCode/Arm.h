@@ -2,7 +2,6 @@
 #define ARM_H
 #include "Robot.h"
 
-struct EncoderPorts{ int a, b; };
 
 class Arm {
 	Robot *robot_;
@@ -17,16 +16,13 @@ class Arm {
 public:
 	enum Position { Down, Up };
 	Arm(int motorPort, int bottomLimitPort, int topLimitPort,
-		EncoderPorts encoderPorts, Robot *robot);
-	
+		int encoder1, int encoder2, Robot *robot);
 	
 	void setPosition(Position pos);
 	Position position();
 	void setAngle(double angle);
 	void setPower(double power);
 	void intake();
-	void deploy();
-	bool deployOne();
 
 	bool lowHit();
 	bool highHit();

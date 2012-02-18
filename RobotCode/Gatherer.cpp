@@ -6,6 +6,6 @@ Gatherer::Gatherer(int gatherPort, Robot *robot) {
 }
 
 void Gatherer::setEnabled(bool enabled) {
-	relay_->Set(enabled ? Relay::kForward : Relay::kOff);
+	relay_->Set(enabled ? Relay::kReverse : Relay::kOff);
 }
 

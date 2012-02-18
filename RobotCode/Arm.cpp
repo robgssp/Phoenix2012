@@ -5,17 +5,17 @@ static const int downPos = 10;
 static const int upPos = 90;
 
 Arm::Arm(int motorPort, int bottomLimitPort, int topLimitPort, 
-		 EncoderPorts encoderPorts, Robot *robot) {
+		 int encoder1, int encoder2, Robot *robot) {
 	pos_ = Down;
 	this->robot_ = robot;
 	this->armMotor_ = new CANJaguar(motorPort);
-	this->bottomLimit_ = new DigitalInput(bottomLimitPort);
+/*this->bottomLimit_ = new DigitalInput(bottomLimitPort);
 	this->topLimit_ = new DigitalInput(topLimitPort);
-	this->encoder_ = new Encoder(encoderPorts.a, encoderPorts.b);
+	this->encoder_ = new Encoder(encoder1, encoder2);
 
 	// TODO tune
 	this->armControllerUp_ = new PIDController(1.0, 0.0, 0.0, encoder_, armMotor_);
-	this->armControllerDown_ = new PIDController(0.5, 0.0, 0.0, encoder_, armMotor_);
+	this->armControllerDown_ = new PIDController(0.5, 0.0, 0.0, encoder_, armMotor_);*/
 }
 
 /**
@@ -57,12 +57,12 @@ bool Arm::highHit() {
  * apply power manually, for joystick control
  */
 void Arm::setPower(double power) {
-	if((highHit() && power > 0) || 
+	/*if((highHit() && power > 0) || 
 	   (lowHit() && power < 0)) {
 		return;
 	}
 	
 	if(armControllerUp_->IsEnabled()) armControllerUp_->Disable();
-	if(armControllerDown_->IsEnabled()) armControllerDown_->Disable();
+	if(armControllerDown_->IsEnabled()) armControllerDown_->Disable();*/
 	armMotor_->Set(power);
 }
