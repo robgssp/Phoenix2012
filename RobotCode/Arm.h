@@ -26,6 +26,8 @@ public:
 
 	bool lowHit();
 	bool highHit();
+
+	int encoderValue();
 private:
 	Position pos_;
 };

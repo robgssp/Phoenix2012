@@ -66,7 +66,7 @@ public:
 		// assorted debug
 		robot.log->info("Left Current: %.1f", robot.drive->leftCurrent());
 		robot.log->info("Right Current: %.1f", robot.drive->rightCurrent());
-		robot.log->info("BCD: %d", robot.bcd->value());
+		robot.log->info("ArmEnc: %d", robot.arm->encoderValue());
 		robot.log->print();
 		
 		/*
