@@ -1,34 +1,22 @@
 #ifndef DUMPER_H
 #define DUMPER_H
+#include "WPILib.h"
 #include "Robot.h"
-
-struct IntakeState;
+#include <ctime>
 
 class Dumper {
 	Robot *robot_;
-	Relay *frontRoller_;
-	Relay *rearRoller_;
-	AnalogChannel *infra_;
-	bool switchWasTriggered_;
-	bool infraWasTriggered_;
-	
-	// for deployOne()
-	void setDeployTarget();
+	Relay *roller_;
+	DigitalInput *intakeSwitch_;
 
-	// for intake()
-	IntakeState *intake_;
+	clock_t intakeEnd_;
 public:
-	Dumper(int frontRollerPort, int rearRollerPort, int infraPort, 
-		   Robot *robot);
-	
-	int contains();
-	
+	Dumper(int rollerPort, int infraPort, Robot *robot);
 	// deployment
 	void deploy();
-	bool deployOne();
 
 	// intake
-	void intake();
+	void updateIntake();
 };
 
 #endif

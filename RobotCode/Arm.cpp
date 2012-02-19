@@ -9,12 +9,14 @@ Arm::Arm(int motorPort, int bottomLimitPort, int topLimitPort,
 	pos_ = Down;
 	this->robot_ = robot;
 	this->armMotor_ = new CANJaguar(motorPort);
-/*this->bottomLimit_ = new DigitalInput(bottomLimitPort);
-	this->topLimit_ = new DigitalInput(topLimitPort);
+	/*this->bottomLimit_ = new DigitalInput(bottomLimitPort);
+	this->topLimit_ = new DigitalInput(topLimitPort);*/
 	this->encoder_ = new Encoder(encoder1, encoder2);
+	encoder_->Start();
+	encoder_->Reset();
 
 	// TODO tune
-	this->armControllerUp_ = new PIDController(1.0, 0.0, 0.0, encoder_, armMotor_);
+	/*this->armControllerUp_ = new PIDController(1.0, 0.0, 0.0, encoder_, armMotor_);
 	this->armControllerDown_ = new PIDController(0.5, 0.0, 0.0, encoder_, armMotor_);*/
 }
 
@@ -66,3 +68,5 @@ void Arm::setPower(double power) {
 	if(armControllerDown_->IsEnabled()) armControllerDown_->Disable();*/
 	armMotor_->Set(power);
 }
+
+int Arm::encoderValue() { return encoder_->Get(); }
