@@ -9,7 +9,7 @@ class Gatherer {
 	Relay *relay_;
 public:
 	Gatherer(int motorPort, Robot *robot);
-	void setEnabled(bool enabled);
+	void setDirection(Relay::Value dir);
 };
 
 #endif

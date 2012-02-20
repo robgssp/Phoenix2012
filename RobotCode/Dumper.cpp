@@ -3,15 +3,15 @@
 Dumper::Dumper(int rollerPort, int switchPort, Robot *robot) {
 	this->robot_ = robot;
 	this->roller_ = new Relay(rollerPort);
-	this->intakeSwitch_ = new DigitalInput(switchPort);
+	//this->intakeSwitch_ = new DigitalInput(switchPort);
 	intakeEnd_ = -1;
 }
 
 /**
  * Runs dumper motors in deployment mode
  */
-void Dumper::deploy() {
-	roller_->Set(Relay::kForward);
+void Dumper::setDeploy(bool enabled) {
+	roller_->Set(enabled ? Relay::kForward : Relay::kOff);
 }
 
 /// not in seconds since TICKS_PER_SECOND is broken
@@ -32,4 +32,10 @@ void Dumper::updateIntake() {
 	}
 }
 
+bool Dumper::isIntaking() {
+	return intakeEnd_ == -1;
+}
 
+void Dumper::setDirection(Relay::Value dir) {
+	roller_->Set(dir);
+}

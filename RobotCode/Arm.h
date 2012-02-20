@@ -3,31 +3,35 @@
 #include "Robot.h"
 
 
-class Arm {
+class Arm : public PIDSource, public PIDOutput {
 	Robot *robot_;
 	CANJaguar *armMotor_;
 	Relay *armRelay_;
-	DigitalInput *armSwitch_;
-	DigitalInput *bottomLimit_;
-	DigitalInput *topLimit_;
-	Encoder *encoder_;
+	AnalogChannel *encoder_;
 	PIDController *armControllerUp_;
 	PIDController *armControllerDown_;
+	double pidFactor_;
+	int startPoint_;
 public:
-	enum Position { Down, Up };
-	Arm(int motorPort, int bottomLimitPort, int topLimitPort,
-		int encoder1, int encoder2, Robot *robot);
+	enum Position { None = -1, Down = 5, Middle = 20, Up = 35 };
+	Arm(int motorPort, int potPort, Robot *robot);
 	
 	void setPosition(Position pos);
 	Position position();
 	void setAngle(double angle);
 	void setPower(double power);
-	void intake();
 
 	bool lowHit();
 	bool highHit();
 
+	double pidFactor();
+	void setPidFactor(double factor);
+	
+	double PIDGet();
+	void PIDWrite(float val);
+
 	int encoderValue();
+	int startPoint();
 private:
 	Position pos_;
 };

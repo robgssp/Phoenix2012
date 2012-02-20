@@ -12,6 +12,7 @@ class Log;
 class Balance;
 class Arm;
 class Gatherer;
+class Dumper;
 
 /** 
  * Container class for robot components
@@ -39,6 +40,7 @@ public:
 	Solenoid *rampDevice;
 	Arm *arm;
 	Gatherer *gatherer;
+	Dumper *dumper;
 };
 
 #endif

@@ -23,7 +23,6 @@ class Drive {
 	bool reversed_;
 	Robot *robot_;
 	Solenoid *shifter_;
-	bool shifterLast_;
 	
 	// update state
 	void updateLight();

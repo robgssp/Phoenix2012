@@ -5,7 +5,7 @@ Gatherer::Gatherer(int gatherPort, Robot *robot) {
 	this->relay_ = new Relay(gatherPort);
 }
 
-void Gatherer::setEnabled(bool enabled) {
-	relay_->Set(enabled ? Relay::kReverse : Relay::kOff);
+void Gatherer::setDirection(Relay::Value dir) {
+	relay_->Set(dir);
 }
 

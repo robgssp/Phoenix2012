@@ -7,6 +7,7 @@
 #include "BcdSwitch.h"
 #include "Gatherer.h"
 #include "Arm.h"
+#include "Dumper.h"
 
 Robot::Robot(Type type) {
 	this->type = type;	
@@ -57,7 +58,8 @@ Robot::Robot(Type type) {
 		
 		ultrasonic = new AnalogChannel(2);
 		gatherer = new Gatherer(1, this);
-		arm = new Arm(6, 7, 8, 5, 6, this);
+		arm = new Arm(6, 3, this);
+		dumper = new Dumper(2, 3, this);
 		//gyroChannel = new AnalogChannel(1);
 		//gyro = new Gyro(gyroChannel);
 		//robot.touchSensor = new DigitalInput(4);
