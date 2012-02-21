@@ -91,7 +91,6 @@ public:
 		robot.log->info("pidf: %.2f", robot.arm->pidFactor());
 		robot.log->info("piden: %s", robot.arm->isPidEnabled() 
 				? "true" : "false");
-
 		robot.log->print();
 		
 		/*
