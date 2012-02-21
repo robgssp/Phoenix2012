@@ -7,20 +7,21 @@
 class Dumper {
 	Robot *robot_;
 	DigitalInput *intakeSwitch_;
+	CANJaguar *roller_;
 
 	clock_t intakeEnd_;
+	double powerNow_;
+	double setPower(double power);
 public:
+	enum Direction { Reverse = -1, Off, Forward };
 	Dumper(int rollerPort, int infraPort, Robot *robot);
-	// deployment
-	void setDeploy(bool enabled);
-	Relay *roller_;
 
 	// intake
 	void updateIntake();
 	bool isIntaking();
 
 	// raw
-	void setDirection(Relay::Value dir);
+	void setDirection(Direction dir);
 };
 
 #endif

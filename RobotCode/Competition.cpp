@@ -66,34 +66,32 @@ public:
 
 		// arm
 		robot.arm->setPower(robot.control->gamepadLeft());
-		if (robot.control->gamepadButton(9))
+		if (robot.control->gamepadButton(4))
 			robot.arm->setPosition(Arm::Up);
+		else if (robot.control->gamepadButton(3))
+			robot.arm->setPosition(Arm::Middle);
+		else if (robot.control->gamepadButton(5))
+			robot.arm->setPosition(Arm::Down);
 		else
 			robot.arm->setPosition(Arm::None);
 
 		if (robot.control->gamepadButton(10))
-			robot.arm->setPidFactor(robot.arm->pidFactor() - 0.1);
+			robot.arm->setPidFactor(robot.arm->pidFactor() - 0.01);
 		if (robot.control->gamepadButton(11))
-			robot.arm->setPidFactor(robot.arm->pidFactor() + 0.1);
+			robot.arm->setPidFactor(robot.arm->pidFactor() + 0.01);
 
-		// dumper
-		/*switch (robot.arm->position()) {
-			case Arm::Down:
-				robot.dumper->updateIntake();
-				break;
-			case Arm::Up:
-			default:
-				robot.dumper->setDeploy(robot.control->gamepadButton(3));
-				break;
-		}*/
-		robot.dumper->setDirection(robot.control->gamepadButton(3) ? 
-				Relay::kForward : robot.control->gamepadButton(2) ?
-				Relay::kReverse : Relay::kOff);
+		robot.dumper->setDirection(robot.control->gamepadButton(1) ? 
+				Dumper::Forward : robot.control->gamepadButton(2) ?
+				Dumper::Reverse : Dumper::Off);
 
 		// assorted debug
-		robot.log->info("Shift %s", robot.control->button(8) ? "low" : "high");
-		robot.log->info("ArmPot: %d", robot.arm->encoderValue());
-		robot.log->info("pidf: %.1f", robot.arm->pidFactor());
+		robot.log->info("Shift %s", robot.control->toggleButton(8) 
+				? "low" : "high");
+		robot.log->info("ArmPot: %.0f", robot.arm->encoderValue());
+		robot.log->info("pidf: %.2f", robot.arm->pidFactor());
+		robot.log->info("piden: %s", robot.arm->isPidEnabled() 
+				? "true" : "false");
+
 		robot.log->print();
 		
 		/*

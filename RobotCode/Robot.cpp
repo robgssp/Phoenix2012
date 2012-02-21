@@ -52,14 +52,14 @@ Robot::Robot(Type type) {
 		//imageTracker = new ImageTracker(this);
 		break;
 	case BotFinal:
-		compressor = new Compressor(9, 4);
+		compressor = new Compressor(9, 2);
 		compressor->Start();
 		bcd = new BcdSwitch(11, 12, 13, 14);
 		
 		ultrasonic = new AnalogChannel(2);
 		gatherer = new Gatherer(1, this);
-		arm = new Arm(6, 3, this);
-		dumper = new Dumper(2, 3, this);
+		arm = new Arm(7, 3, this);
+		dumper = new Dumper(6, 3, this);
 		//gyroChannel = new AnalogChannel(1);
 		//gyro = new Gyro(gyroChannel);
 		//robot.touchSensor = new DigitalInput(4);

@@ -3,7 +3,7 @@
 
 Control::Control(Joystick *left, Joystick *right,
 								 Joystick *gamepad, Mode mode, Robot *robot)
-	: isTriggered_(11, false), wasTriggered_(11, false),
+	: isTriggered_(16, false), wasTriggered_(16, false),
 		gamepadIsTriggered_(16, false), gamepadWasTriggered_(16, false) {
 	this->left_ = left;
 	this->right_ = right;

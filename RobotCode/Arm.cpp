@@ -1,5 +1,6 @@
 #include "Arm.h"
 #include "Log.h"
+#include <cstdlib>
 
 Arm::Arm(int motorPort, int potPort, Robot *robot) {
 	pos_ = Down;
@@ -7,12 +8,18 @@ Arm::Arm(int motorPort, int potPort, Robot *robot) {
 	this->armMotor_ = new CANJaguar(motorPort);
 	this->encoder_ = new AnalogChannel(potPort);
 	startPoint_ = -(encoder_->GetValue());
+	for (int i = 0; i < ARMENCAVGS; ++i)
+		encoderValues_[i] = 0;
 
 	// TODO tune
-	this->armControllerUp_ = new PIDController(1.0, 0.0, 0.0,
-		 this, this);
+	this->armControllerUp_ = new PIDController(1.44, 4.11, 0.126,
+			this, this);
+	this->armControllerMiddle_ = new PIDController(0.3, 0.0, 0.0,
+			this, this);
 	this->armControllerDown_ = new PIDController(0.5, 0.0, 0.0,
-		 this, this);
+			this, this);
+
+	this->armControllerCurrent_ = armControllerDown_;
 }
 
 /**
@@ -23,13 +30,11 @@ void Arm::setPosition(Position pos) {
 		case Down:
 		case Middle:
 		case Up:
-			setAngle((int) pos);
+			setAngle((double) pos);
 			break;
 		default:
-			if (armControllerUp_->IsEnabled())
-				armControllerUp_->Disable();
-			if (armControllerDown_->IsEnabled())
-				armControllerDown_->Disable();
+			if (armControllerCurrent_->IsEnabled())
+				armControllerCurrent_->Disable();
 			break;
 	}
 	this->pos_ = pos;
@@ -40,40 +45,49 @@ Arm::Position Arm::position() {
 }
 
 void Arm::setPidFactor(double factor) {
-	armControllerUp_->SetPID(factor, 
-			armControllerUp_->GetI(),
-			armControllerUp_->GetD());
+	armControllerCurrent_->SetPID(factor, 
+			armControllerCurrent_->GetI(),
+			armControllerCurrent_->GetD());
+}
+
+bool Arm::isPidEnabled() {
+	return armControllerCurrent_->IsEnabled();
 }
 
 double Arm::pidFactor() {
-	return armControllerUp_->GetP();
+	return armControllerCurrent_->GetP();
 }
 
 /**
  * Sets the arm angle manually to the specified angle
  */
 void Arm::setAngle(double angle) {
-	/*int current = encoder_->GetValue();
-	PIDController &controller = angle > current ? *armControllerUp_ : *armControllerDown_;
-	PIDController &other = &controller == armControllerUp_ ? armControllerDown_ : armControllerUp_;
-	controller.SetSetpoint(angle);
-	if (angle < (int) Down) angle = (int) Down;
-	if (angle > (int) Up) angle = (int) Up;
+	PIDController *armControllerLast_ = armControllerCurrent_;
 
-	if (other.IsEnabled()) other.Disable(); 
-	if (!controller.IsEnabled()) controller.Enable();*/
-	if (!armControllerUp_->IsEnabled()) armControllerUp_->Enable();
-	if (armControllerUp_->GetSetpoint() != angle)
-		armControllerUp_->SetSetpoint(angle);
+	armControllerCurrent_ = angle > (Up + Middle / 2) ? armControllerUp_ :
+		angle < (Down + Middle / 2) ? armControllerDown_ : armControllerMiddle_;
+	if (armControllerLast_ != armControllerCurrent_) 
+		armControllerLast_->Disable();
+	armControllerCurrent_->Enable();
+
+
+	armControllerCurrent_->SetSetpoint(angle);
 	pos_ = None;
 }
 
+double Arm::targetAngle() { return armControllerCurrent_->GetSetpoint(); }
+
+void Arm::setTargetAngle(double angle) {
+	if (angle > 0.1 && angle < -0.1)
+		setAngle(targetAngle() + angle);
+}
+
 bool Arm::lowHit() {
-	return encoder_->GetValue() < (int) Down;
+	return encoderValue() < (int) Down;
 }
 
 bool Arm::highHit() {
-	return encoder_->GetValue() > (int) Up;
+	return encoderValue() > (int) Up;
 }
 
 /**
@@ -81,15 +95,22 @@ bool Arm::highHit() {
  */
 void Arm::setPower(double power) {
 	if (power > 0.1 || power < -0.1) {
-		if (armControllerDown_->IsEnabled())
-			armControllerDown_->Disable();
-		if (armControllerUp_->IsEnabled())
-			armControllerUp_->Disable();
+		if (armControllerCurrent_->IsEnabled())
+			armControllerCurrent_->Disable();
 		armMotor_->Set(power);
 	}
+	robot_->log->info("armvolt: %f", armMotor_->GetOutputCurrent());
 }
 
-int Arm::encoderValue() { return -(encoder_->GetValue()) - startPoint_; }
+double Arm::encoderValue() { 
+	for (int i = ARMENCAVGS - 1; i > 0; --i) 
+		encoderValues_[i] = encoderValues_[i - 1];
+	encoderValues_[0] = -(encoder_->GetValue()) - startPoint_; 
+	double average = 0;
+	for (int i = 0; i < ARMENCAVGS; ++i) { average += encoderValues_[i]; } 
+	return average / ARMENCAVGS;
+	//return encoder_->GetValue();
+}
 
 int Arm::startPoint() { return startPoint_; }
 
