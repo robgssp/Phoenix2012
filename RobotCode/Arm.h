@@ -17,7 +17,7 @@ class Arm : public PIDSource, public PIDOutput {
 	double encoderValues_[ARMENCAVGS];
 	void setAngle(double angle);
 public:
-	enum Position { None = -1, Down = 5, Middle = 20, Up = 35 };
+	enum Position { None = -1, Down = 5, Middle = 20, Up = 39 };
 	Arm(int motorPort, int potPort, Robot *robot);
 	
 	// preset funcs

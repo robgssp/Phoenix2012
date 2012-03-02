@@ -12,11 +12,11 @@ Arm::Arm(int motorPort, int potPort, Robot *robot) {
 		encoderValues_[i] = 0;
 
 	// TODO tune
-	this->armControllerUp_ = new PIDController(1.44, 4.11, 0.126,
+	this->armControllerUp_ = new PIDController(0.12, 0.0, 0.0,
 			this, this);
-	this->armControllerMiddle_ = new PIDController(0.3, 0.0, 0.0,
+	this->armControllerMiddle_ = new PIDController(0.1, 0.0, 0.0,
 			this, this);
-	this->armControllerDown_ = new PIDController(0.5, 0.0, 0.0,
+	this->armControllerDown_ = new PIDController(0.1, 0.0, 0.0,
 			this, this);
 
 	this->armControllerCurrent_ = armControllerDown_;
@@ -64,12 +64,12 @@ double Arm::pidFactor() {
 void Arm::setAngle(double angle) {
 	PIDController *armControllerLast_ = armControllerCurrent_;
 
-	armControllerCurrent_ = angle > (Up + Middle / 2) ? armControllerUp_ :
-		angle < (Down + Middle / 2) ? armControllerDown_ : armControllerMiddle_;
+	/*armControllerCurrent_ = angle > (Up + Middle / 2) ? armControllerUp_ :
+		angle < (Down + Middle / 2) ? armControllerDown_ : armControllerMiddle_;*/
+	armControllerCurrent_ = armControllerUp_;
 	if (armControllerLast_ != armControllerCurrent_) 
 		armControllerLast_->Disable();
 	armControllerCurrent_->Enable();
-
 
 	armControllerCurrent_->SetSetpoint(angle);
 	pos_ = None;
@@ -94,11 +94,9 @@ bool Arm::highHit() {
  * apply power manually, for joystick control
  */
 void Arm::setPower(double power) {
-	if (power > 0.1 || power < -0.1) {
-		if (armControllerCurrent_->IsEnabled())
-			armControllerCurrent_->Disable();
-		armMotor_->Set(power);
-	}
+	if (armControllerCurrent_->IsEnabled())
+		armControllerCurrent_->Disable();
+	armMotor_->Set(power);
 	robot_->log->info("armvolt: %f", armMotor_->GetOutputCurrent());
 }
 
