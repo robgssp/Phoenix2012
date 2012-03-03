@@ -53,7 +53,7 @@ public:
 		robot.drive->setRight(robot.control->right());
 		robot.drive->setScale(robot.control->throttle());
 		robot.drive->setReversed(robot.control->toggleButton(11));
-		robot.drive->setLowShift(robot.control->toggleButton(8));
+		robot.drive->setLowShift(robot.control->gamepadToggleButton(9));
 
 		// ball gatherer
 		if (robot.control->gamepadButton(6)) 
@@ -65,20 +65,22 @@ public:
 		robot.gatherer->setDirection(gathererDirection);
 
 		// arm
-		robot.arm->setPower(robot.control->gamepadLeft());
 		if (robot.control->gamepadButton(4))
 			robot.arm->setPosition(Arm::Up);
 		else if (robot.control->gamepadButton(3))
 			robot.arm->setPosition(Arm::Middle);
 		else if (robot.control->gamepadButton(5))
 			robot.arm->setPosition(Arm::Down);
-		else
-			robot.arm->setPosition(Arm::None);
+		else 
+			robot.arm->setPower(robot.control->gamepadLeft());
 
-		if (robot.control->gamepadButton(10))
+		/*if (robot.control->gamepadButton(10))
 			robot.arm->setPidFactor(robot.arm->pidFactor() - 0.01);
 		if (robot.control->gamepadButton(11))
-			robot.arm->setPidFactor(robot.arm->pidFactor() + 0.01);
+			robot.arm->setPidFactor(robot.arm->pidFactor() + 0.01);*/
+
+		// ramp
+		robot.rampDevice->Set(robot.control->gamepadButton(11));
 
 		robot.dumper->setDirection(robot.control->gamepadButton(1) ? 
 				Dumper::Forward : robot.control->gamepadButton(2) ?

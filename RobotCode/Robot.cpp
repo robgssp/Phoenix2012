@@ -60,9 +60,11 @@ Robot::Robot(Type type) {
 		gatherer = new Gatherer(1, this);
 		arm = new Arm(7, 3, this);
 		dumper = new Dumper(6, 3, this);
+		rampDevice = new Solenoid(1);
 		//gyroChannel = new AnalogChannel(1);
 		//gyro = new Gyro(gyroChannel);
-		rampDevice = new Solenoid(1);
+		//robot.touchSensor = new DigitalInput(4);
+		//robot.bcd = new BcdSwitch(1, 2);
 		break;
 	}
 }
