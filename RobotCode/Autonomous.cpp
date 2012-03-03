@@ -9,64 +9,47 @@ ScoreAutonomous::ScoreAutonomous(Robot *robot) {
 	timePassed = 0;
 	this->robot_ = robot;
 	robot_->drive->setReversed(true);
-	robot->log->info("SA Constructor");
+	robot_->log->info("SA Constructor");
 }
 
 void ScoreAutonomous::loop() {
 	if (state == End) {
-		if (lastMotorSpeed < 0) {
-			lastMotorSpeed = lastMotorSpeed - .001;
-			robot_->drive->setLeft(lastMotorSpeed);
-			robot_->drive->setRight(lastMotorSpeed);
+		robot_->drive->setLeft(0);
+		robot_->drive->setRight(0);	
+		if (timePassed < 210) { 
+			robot_->arm->setPosition(Arm::Up);
+			++timePassed;
+		}
+		else if (timePassed < 300) {
+			robot_->dumper->setDirection(Dumper::Forward);
+			++timePassed;
 		}
 		else {
-			robot_->drive->setLeft(0);
-			robot_->drive->setRight(0);	
-			/*
-			robot_->arm->setPosition(Arm::Up);
-			timePassed = timePassed + 1;
-				if (timePassed < 800) { //Random number for now
-					//robot_->deployMotor->Set(.25);
-				}
-				else {
-					robot_->arm->setPosition(Arm::Down);
-				}
-			*/
+			robot_->dumper->setDirection(Dumper::Off);
+			timePassed = 0;
+		}
 		robot_->log->info("End.");
 		return;
-		}
 	}
 	else if (state == DriveToBasket) {
+		++timePassed;
+		/*
 		distances[2] = distances[1];
 		distances[1] = distances[0];
 		distances[0] = robot_->ultrasonic->GetValue();
 		int averageDist = 0;
 		for(int i = 0; i < 3; ++i) averageDist += distances[i];
 		averageDist /= 3;
-		if (averageDist <= 30) 
-		{
-		robot_->log->info("=>End %d, %d %d %d", averageDist, distances[0], distances[1], distances[2]);
-		state = End; return; 
-		}
-		/*
-		int Anglea;
-			if (Anglea >= 2) {
-				robot_->drive->setLeft(.6);
-				robot_->drive->setRight(.5);	
-			}
-			if (Anglea <= 2) {
-				robot_->drive->setLeft(.5);
-				robot_->drive->setRight(.6);	
-			}
-			else {
-				robot_->drive->setLeft(.5);
-				robot_->drive->setRight(.5);	
-			}
 		*/
-		robot_->drive->setLeft(.41);
+		if (timePassed >= 100) {
+			//robot_->log->info("=>End %d, %d %d %d", averageDist, distances[0], distances[1], distances[2]);
+			state = End;
+		    return; 
+		}
+		robot_->drive->setLeft(.4);
 		robot_->drive->setRight(.5);
 		robot_->log->info("Moving...");
-		robot_->log->info("Dist: %d", averageDist);
+		//robot_->log->info("Dist: %d", averageDist);
 	}
 }
 

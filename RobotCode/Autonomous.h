@@ -4,6 +4,7 @@
 #include "Robot.h"
 #include "Arm.h"
 #include "Control.h"
+#include "Dumper.h"
 
 /**
  * Autonomous no-op & base class

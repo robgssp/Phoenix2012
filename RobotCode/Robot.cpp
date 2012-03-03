@@ -62,9 +62,7 @@ Robot::Robot(Type type) {
 		dumper = new Dumper(6, 3, this);
 		//gyroChannel = new AnalogChannel(1);
 		//gyro = new Gyro(gyroChannel);
-		//robot.touchSensor = new DigitalInput(4);
-		//robot.bcd = new BcdSwitch(1, 2);
-		//robot.rampDevice = new Solenoid(1);
+		rampDevice = new Solenoid(1);
 		break;
 	}
 }
