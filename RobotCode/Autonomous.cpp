@@ -16,11 +16,11 @@ void ScoreAutonomous::loop() {
 	if (state == End) {
 		robot_->drive->setLeft(0);
 		robot_->drive->setRight(0);	
-		if (timePassed < 210) { 
+		if (timePassed < 250) { 
 			robot_->arm->setPosition(Arm::Up);
 			++timePassed;
 		}
-		else if (timePassed < 300) {
+		else if (timePassed < 350) {
 			robot_->dumper->setDirection(Dumper::Forward);
 			++timePassed;
 		}
