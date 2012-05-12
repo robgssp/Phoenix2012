@@ -1,6 +1,8 @@
 #include "Autonomous.h"
 #include "Drive.h"
 #include "Log.h"
+#include "Dumper.h"
+#include "RampDevice.h"
 
 ScoreAutonomous::ScoreAutonomous(Robot *robot) {
 	state = DriveToBasket;
@@ -72,6 +74,28 @@ void ScoreAutonomous::loop() {
 
 // ---
 
+OtherAutonomous::OtherAutonomous(Robot *robot) {
+	this->robot_ = robot;
+}
+
+void OtherAutonomous::loop() {
+	// run forward
+	if (!timer.HasPeriodPassed(1.5)) {
+		robot_->drive->setLeft(0.75);
+		robot_->drive->setRight(0.75);
+		// raise arm
+	} else if (!timer.HasPeriodPassed(3.5)) {
+		robot_->drive->setLeft(0);
+		robot_->drive->setRight(0);
+		robot_->arm->setPosition(Arm::Up);
+	} else if (!timer.HasPeriodPassed(5)) {
+		// dump
+		robot_->dumper->setDirection(Dumper::Forward);
+	}
+}
+
+// ---
+
 BridgeAutonomous::BridgeAutonomous(Robot *robot) {
 	robot_ = robot;
 	count = 1;
@@ -93,10 +117,10 @@ void BridgeAutonomous::loop() {
         robot_->drive->setRight(0);
 	    count = count + 1;
 	    if (count > 799){ //Just a random number for now
-	    	robot_->rampDevice->Set(0);
+	    	robot_->rampDevice->set(0);
 	    }
 	    else { 
-	    	robot_->rampDevice->Set(1);
+	    	robot_->rampDevice->set(1);
 	    }
 	}
 }

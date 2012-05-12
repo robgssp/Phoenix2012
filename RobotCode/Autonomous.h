@@ -30,6 +30,15 @@ public:
 	void loop();
 };
 
+//quick autonomous
+class OtherAutonomous : public Autonomous {
+	Robot *robot_;
+	Timer timer;
+public:
+	OtherAutonomous(Robot *robot);
+	void loop();
+};
+
 /**
  * Autonomous to lower the bridge
  */

@@ -13,6 +13,7 @@ class Balance;
 class Arm;
 class Gatherer;
 class Dumper;
+class RampDevice;
 
 /** 
  * Container class for robot components
@@ -37,7 +38,7 @@ public:
 	Compressor *compressor;
 	Type type;
 	Balance *balance;
-	Solenoid *rampDevice;
+	RampDevice *rampDevice;
 	Arm *arm;
 	Gatherer *gatherer;
 	Dumper *dumper;

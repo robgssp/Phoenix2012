@@ -8,6 +8,7 @@
 #include "Gatherer.h"
 #include "Arm.h"
 #include "Dumper.h"
+#include "RampDevice.h"
 
 Robot::Robot(Type type) {
 	this->type = type;	
@@ -60,7 +61,7 @@ Robot::Robot(Type type) {
 		gatherer = new Gatherer(1, this);
 		arm = new Arm(7, 3, this);
 		dumper = new Dumper(6, 3, this);
-		rampDevice = new Solenoid(1);
+		rampDevice = new RampDevice(new CANJaguar(13), 0.4);
 		//gyroChannel = new AnalogChannel(1);
 		//gyro = new Gyro(gyroChannel);
 		//robot.touchSensor = new DigitalInput(4);
