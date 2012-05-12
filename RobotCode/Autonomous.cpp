@@ -53,7 +53,7 @@ void ScoreAutonomous::loop() {
 		    return; 
 		}
 		robot_->drive->setLeft(.293);
-		robot_->drive->setRight(.4);
+		robot_->drive->setRight(.38);
 		robot_->log->info("Moving...");
 		//robot_->log->info("Dist: %d", averageDist);
 	}
