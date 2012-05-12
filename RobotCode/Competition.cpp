@@ -21,7 +21,7 @@ public:
 	
 	void AutonomousInit() {
 		int value = robot.bcd->value();
-		if (value == 1)
+		if (value == 1 || value == 2)
 			robot.autonomous = new ScoreAutonomous(&robot);
 		else 
 			robot.autonomous = new Autonomous();

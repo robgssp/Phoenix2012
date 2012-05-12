@@ -10,23 +10,27 @@ ScoreAutonomous::ScoreAutonomous(Robot *robot) {
 	this->robot_ = robot;
 	robot_->drive->setReversed(true);
 	robot_->log->info("SA Constructor");
+	bcdValue = robot_->bcd->value();
 }
 
 void ScoreAutonomous::loop() {
 	if (state == End) {
 		robot_->drive->setLeft(0);
 		robot_->drive->setRight(0);	
-		if (timePassed < 250) { 
-			robot_->arm->setPosition(Arm::Up);
+		if (timePassed < 470) { 
+			robot_->arm->setAngle(35);
 			++timePassed;
 		}
-		else if (timePassed < 350) {
+		if (timePassed < 600) { 
+			robot_->arm->setAngle(39);
+			++timePassed;
+		}
+		else if (timePassed < 700 && bcdValue == 1) {
 			robot_->dumper->setDirection(Dumper::Forward);
 			++timePassed;
 		}
 		else {
 			robot_->dumper->setDirection(Dumper::Off);
-			timePassed = 0;
 		}
 		robot_->log->info("End.");
 		return;
@@ -41,13 +45,13 @@ void ScoreAutonomous::loop() {
 		for(int i = 0; i < 3; ++i) averageDist += distances[i];
 		averageDist /= 3;
 		*/
-		if (timePassed >= 100) {
+		if (timePassed >= 320) {
 			//robot_->log->info("=>End %d, %d %d %d", averageDist, distances[0], distances[1], distances[2]);
 			state = End;
 		    return; 
 		}
-		robot_->drive->setLeft(.4);
-		robot_->drive->setRight(.5);
+		robot_->drive->setLeft(.293);
+		robot_->drive->setRight(.4);
 		robot_->log->info("Moving...");
 		//robot_->log->info("Dist: %d", averageDist);
 	}

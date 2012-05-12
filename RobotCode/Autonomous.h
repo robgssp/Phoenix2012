@@ -5,6 +5,7 @@
 #include "Arm.h"
 #include "Control.h"
 #include "Dumper.h"
+#include "BcdSwitch.h"
 
 /**
  * Autonomous no-op & base class
@@ -25,6 +26,7 @@ class ScoreAutonomous : public Autonomous {
 	int distances[3];
 	float lastMotorSpeed;
 	int timePassed;
+	int bcdValue;
 	Robot *robot_;
 public:
 	ScoreAutonomous(Robot *robot);
