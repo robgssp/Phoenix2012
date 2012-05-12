@@ -9,6 +9,7 @@
 #include "Balance.h"
 #include "Gatherer.h"
 #include "Dumper.h"
+#include "RampDevice.h"
 #include <algorithm>
 
 class Competition : public IterativeRobot {
@@ -64,23 +65,28 @@ public:
 			gathererDirection = Relay::kOff;
 		robot.gatherer->setDirection(gathererDirection);
 
-		// arm
-		if (robot.control->gamepadButton(4))
-			robot.arm->setPosition(Arm::Up);
-		else if (robot.control->gamepadButton(3))
-			robot.arm->setPosition(Arm::Middle);
-		else if (robot.control->gamepadButton(5))
-			robot.arm->setPosition(Arm::Down);
-		else 
-			robot.arm->setPower(robot.control->gamepadLeft());
-
+		// Button 11 is mode control: if enabled, the joystick controls
+		// the bridge mechanism. If not, it's the standard arm.
+		if (!robot.control->gamepadButton(11)) {
+			if (robot.control->gamepadButton(4))
+				robot.arm->setPosition(Arm::Up);
+			else if (robot.control->gamepadButton(3))
+				robot.arm->setPosition(Arm::Middle);
+			else if (robot.control->gamepadButton(5))
+				robot.arm->setPosition(Arm::Down);
+			else 
+				robot.arm->setPower(robot.control->gamepadLeft());
+			
+			robot.rampDevice->set(0);
+		} else {
+			robot.rampDevice->set(robot.control->gamepadLeft());
+			robot.arm->setPower(0);
+		}
+			
 		/*if (robot.control->gamepadButton(10))
 			robot.arm->setPidFactor(robot.arm->pidFactor() - 0.01);
 		if (robot.control->gamepadButton(11))
 			robot.arm->setPidFactor(robot.arm->pidFactor() + 0.01);*/
-
-		// ramp
-		robot.rampDevice->Set(robot.control->gamepadButton(11));
 
 		robot.dumper->setDirection(robot.control->gamepadButton(1) ? 
 				Dumper::Forward : robot.control->gamepadButton(2) ?
